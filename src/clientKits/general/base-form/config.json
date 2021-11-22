@@ -1,0 +1,8 @@
+{
+  "name": "baseForm",
+  "key": "base-form",
+  "text": "表单",
+  "icon": "fa-list",
+  "category": "general",
+  "condition": {}
+}

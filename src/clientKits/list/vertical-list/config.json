@@ -1,0 +1,8 @@
+{
+  "name": "verticalList",
+  "key": "vertical-list",
+  "text": "横向列表",
+  "icon": "fa-columns",
+  "category": "list",
+  "condition": {}
+}

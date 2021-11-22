@@ -1,0 +1,8 @@
+{
+  "name": "pageIntro",
+  "key": "page-intro",
+  "text": "引言模块",
+  "icon": "fa-quote-left",
+  "category": "pageModule",
+  "condition": {}
+}

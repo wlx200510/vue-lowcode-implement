@@ -1,0 +1,8 @@
+{
+  "name": "newsMarquee",
+  "key": "news-marquee",
+  "text": "滚动新闻",
+  "icon": "fa-newspaper-o",
+  "category": "animate",
+  "condition": {}
+}

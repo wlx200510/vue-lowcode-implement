@@ -1,0 +1,8 @@
+{
+  "name": "floorMenu",
+  "key": "floor-menu",
+  "text": "楼层导航",
+  "icon": "fa-list-ol",
+  "category": "general",
+  "condition": {}
+}

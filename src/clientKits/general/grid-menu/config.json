@@ -1,0 +1,8 @@
+{
+  "name": "gridMenu",
+  "key": "grid-menu",
+  "text": "金刚位",
+  "icon": "fa-th",
+  "category": "general",
+  "condition": {}
+}

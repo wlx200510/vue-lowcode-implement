@@ -1,0 +1,8 @@
+{
+  "name": "swiperBanner",
+  "key": "swiper-banner",
+  "text": "轮播图",
+  "icon": "fa-caret-square-o-right",
+  "category": "swiper",
+  "condition": {}
+}

@@ -1,0 +1,8 @@
+{
+  "name": "image",
+  "key": "image",
+  "text": "图片",
+  "icon": "fa-file-image-o",
+  "category": "general",
+  "condition": {}
+}
