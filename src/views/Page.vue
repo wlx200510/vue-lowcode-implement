@@ -84,7 +84,8 @@ import { useRouter } from 'vue2-helpers/vue-router'
 
 import Upload from '@/components/common/upload.vue'
 import { activityPlugins } from '@/const/pageDict'
-
+import menuConfig from '@/config/menu.config'
+console.log(menuConfig)
 const formLabelWidth = '80px'
 const router = useRouter()
 const routeData = router.currentRoute

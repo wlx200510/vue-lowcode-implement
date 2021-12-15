@@ -1,4 +1,4 @@
-import { autoCompletion, isValid } from './_help'
+import { autoCompletion, isValid } from '../helper'
 
 // https://webpack.docschina.org/guides/dependency-management/#require-with-expression
 // require.context 中的参数必须是字面量值

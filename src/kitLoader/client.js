@@ -36,11 +36,17 @@ function loadClientKitList() {
 
   console.log(compConfigs)
 
-  for (const vm of templates) {
-    // 需要获取name
-    const compName = line2Hump(vm.folderKey.split('/').pop())
-    ClientKitList.push(new ClientKit({ name: compName }, vm))
+  for (const conf of compConfigs) {
+    const { folderKey } = conf
+    const vm = templates.find((it) => it.folderKey === folderKey)
+
+    if (vm) {
+      ClientKitList.push(new ClientKit(conf, vm))
+    } else {
+      console.warn(`[kit.client.controller] cannot match ${folderKey}`)
+    }
   }
+
   return ClientKitList
 }
 

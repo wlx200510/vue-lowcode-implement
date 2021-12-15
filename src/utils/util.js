@@ -1,4 +1,17 @@
+const GET_GUID = (function* () {
+  let index = 1
+
+  while (true) {
+    yield index
+    index += 1
+  }
+})()
 export default {
+  createGUID(prefix = '') {
+    const TIME_STAMP = Date.now()
+    const Id = GET_GUID.next().value
+    return `${prefix}_${TIME_STAMP}_${Id}`
+  },
   createDomID(len) {
     return Number(Math.random().toString().substr(3, len)).toString(36)
   },
@@ -14,10 +27,10 @@ export default {
     if (typeof time === 'object') {
       date = time
     } else {
-      if ((typeof time === 'string') && (/^[0-9]+$/.test(time))) {
+      if (typeof time === 'string' && /^[0-9]+$/.test(time)) {
         time = parseInt(time)
       }
-      if ((typeof time === 'number') && (time.toString().length === 10)) {
+      if (typeof time === 'number' && time.toString().length === 10) {
         console.log('is number')
         time = time * 1000
       }
@@ -30,12 +43,14 @@ export default {
       h: date.getHours(),
       i: date.getMinutes(),
       s: date.getSeconds(),
-      a: date.getDay()
+      a: date.getDay(),
     }
     const time_str = format.replace(/{(y|m|d|h|i|s|a)+}/g, (result, key) => {
       let value = formatObj[key]
       // Note: getDay() returns 0 on Sunday
-      if (key === 'a') { return ['日', '一', '二', '三', '四', '五', '六'][value ] }
+      if (key === 'a') {
+        return ['日', '一', '二', '三', '四', '五', '六'][value]
+      }
       if (result.length > 0 && value < 10) {
         value = '0' + value
       }
