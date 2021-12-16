@@ -73,7 +73,18 @@ export default {
     return kit || null
   },
 
-  getKitCategory() {
+  getKitCategory(ownere = '*', backendConfig) {
     // @todo
+    // 有缓存
+    if (CaregoryMapCache && CaregoryMapCache[owner]) {
+      return CaregoryMapCache[owner]
+    }
+
+    if (!CaregoryMapCache) {
+      CaregoryMapCache = {}
+    }
+    if (!CaregoryMapCache[owner]) {
+      CaregoryMapCache[owner] = []
+    }
   },
 }

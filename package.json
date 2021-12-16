@@ -17,6 +17,7 @@
     "iscroll": "^5.2.0",
     "swiper": "^4.5.0",
     "element-ui": "^2.15.6",
+    "font-awesome": "^4.7.0",
     "normalize.css": "^8.0.1",
     "vant": "^2.12.33",
     "vue": "^2.6.11",

@@ -38,6 +38,7 @@ CATEGORY.forEach((item) => {
     configItems.filter((config) => config.category === item.key) || []
   menuItems.push(item)
 })
+
 export default menuItems
 // module.exports = [
 //   {

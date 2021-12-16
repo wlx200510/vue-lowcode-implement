@@ -35,11 +35,11 @@ const props = defineProps({
 })
 const emit = defineEmits(['update:show'])
 const visible = ref(props.show)
-watch(props.show, (newVal) => {
-  if (newVal && document.getElementById('ifr-preview')) {
+watch(props, (newVal) => {
+  if (newVal.show && document.getElementById('ifr-preview')) {
     document.getElementById('ifr-preview').contentWindow.location.reload(true)
   }
-  visible.value = newVal
+  visible.value = newVal.show
 })
 </script>
 

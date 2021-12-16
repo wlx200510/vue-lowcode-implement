@@ -72,7 +72,7 @@
         </div>
 
         <!--底部导航控件-->
-        <div
+        <!-- <div
           v-if="bottomMenu"
           :class="['absolute-tpl', bottomMenu.active ? 'current' : '']"
           @click="clickBtmMenu"
@@ -84,7 +84,7 @@
               <i class="fa fa-trash"></i>
             </a>
           </div>
-        </div>
+        </div> -->
       </div>
     </div>
 
@@ -125,7 +125,7 @@ import pageOption from '@/config/page.config.js'
 // 组件默认配置
 import compConfig from '@/config/comp.config.js'
 
-const { $bus, $confirm, $message } = getCurrentInstance().Proxy
+const { $bus, $confirm, $message } = getCurrentInstance().proxy
 const clickShow = ref(false),
   previewShow = ref(false),
   compList = ref([]),
@@ -402,6 +402,7 @@ export default {
       margin: 0 auto;
       background-color: #fff;
       transform: translateX(-20px);
+      contain: 'strict';
 
       .place-holder {
         position: relative;

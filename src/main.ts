@@ -6,6 +6,7 @@ import store from './store'
 
 import 'normalize.css'
 import 'animate.css'
+import 'font-awesome/css/font-awesome.min.css'
 
 // 使用 vant
 import { setupVant } from './plugins/vant'
