@@ -34,8 +34,6 @@ function loadClientKitList() {
   const templates = loadViewModules()
   const compConfigs = loadConfModules()
 
-  console.log(compConfigs)
-
   for (const conf of compConfigs) {
     const { folderKey } = conf
     const vm = templates.find((it) => it.folderKey === folderKey)

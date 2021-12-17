@@ -4,29 +4,31 @@
     :style="style"
   >
     <div class="form-box">
-      <div
-        class="form-box-item"
-        :style="{ marginTop: component.others.config[4].val + 'px' }"
-        v-for="input in inputs"
-      >
-        <label :style="labelStyle">{{ input.desc }}</label>
-        <input
-          class="item-input"
-          v-if="input.type !== 'select'"
-          :style="inputStyle"
-          :type="input.type"
-          :placeholder="
-            input.placeholder
-              ? input.placeholder
-              : input.isNecessary
-              ? '必填'
-              : '非必填'
-          "
-        />
-        <select class="item-input" v-else>
-          <option></option>
-        </select>
-      </div>
+      <template v-if="inputs.length">
+        <div
+          class="form-box-item"
+          :style="{ marginTop: component.others.config[4].val + 'px' }"
+          v-for="input in inputs"
+        >
+          <label :style="labelStyle">{{ input.desc }}</label>
+          <input
+            class="item-input"
+            v-if="input.type !== 'select'"
+            :style="inputStyle"
+            :type="input.type"
+            :placeholder="
+              input.placeholder
+                ? input.placeholder
+                : input.isNecessary
+                ? '必填'
+                : '非必填'
+            "
+          />
+          <select class="item-input" v-else>
+            <option></option>
+          </select>
+        </div>
+      </template>
       <div v-else class="image-placeholder"><i class="fa fa-list"></i></div>
       <div class="form-btn" :style="buttonStyle">提 交</div>
     </div>

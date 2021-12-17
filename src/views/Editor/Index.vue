@@ -32,7 +32,7 @@
               :data-index="idx"
               @click.capture="clickComp"
             >
-              <component :is="comp.type" :component="comp"></component>
+              <component :is="comp.name" :component="comp"></component>
               <!--控件操作-->
               <div class="comp-menu">
                 <a
@@ -113,6 +113,7 @@ import {
   onMounted,
 } from '@vue/composition-api'
 import util from '@/utils/util.js'
+import { line2Hump, firstLetterUpper } from '@/utils/tool'
 import appSidebar from './layout/sidebar.vue'
 import appToolbar from './layout/toolbar.vue'
 import appOpt from './layout/option.vue'
@@ -134,10 +135,10 @@ const clickShow = ref(false),
   currentIndex = ref(-1),
   currentConfig = ref(null)
 
-let click = {
-  index: ref(0),
-  tabs: ref([]),
-}
+let click = reactive({
+  index: 0,
+  tabs: [],
+})
 
 watchEffect(() => {
   if (compList.value && compList.value.length > 1) {
@@ -156,6 +157,7 @@ function addComp(index, key) {
   const comp = util.copyObj(compConfig[key])
   const config = {
     type: key,
+    name: firstLetterUpper(line2Hump(key)),
     active: true,
     domId: key + '-' + util.createDomID(),
   }
@@ -221,7 +223,7 @@ function drop(e) {
   const key = e.dataTransfer.getData('cmp-type')
   if (key === 'bottom-menu') return
   const idx = parseInt(target.dataset.index)
-  if (compConfig.value[key]) {
+  if (compConfig[key]) {
     resetCompUnchecked()
     addComp(idx, key)
   } else {
@@ -238,7 +240,7 @@ function dropPhone(e) {
     target.classList.remove('active')
     const key = e.dataTransfer.getData('cmp-type')
     const idx = parseInt(target.dataset.index)
-    if (compConfig.value[key]) {
+    if (compConfig[key]) {
       // 这里针对只能放置一个的组件处理，可以通过属性来搞
       if (key === 'bottom-menu') {
         if (bottomMenu.value) {

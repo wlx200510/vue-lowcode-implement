@@ -5,7 +5,7 @@
 
       <form-item
         v-for="(item, idx) in option.base"
-        :key="item.type"
+        :key="item.label"
         :item="item"
         :index="idx"
       ></form-item>
@@ -13,14 +13,14 @@
       <h3><i class="el-icon-setting"></i> 样式配置</h3>
       <form-item
         v-for="(item, idx) in option.style"
-        :key="item.type"
+        :key="item.attr"
         :item="item"
         :index="idx"
       ></form-item>
       <h3><i class="el-icon-setting"></i> 分享配置</h3>
       <form-item
         v-for="(item, idx) in option.weixin"
-        :key="item.type"
+        :key="item.attr"
         :item="item"
         :index="idx"
       ></form-item>

@@ -11,10 +11,13 @@ import 'font-awesome/css/font-awesome.min.css'
 // 使用 vant
 import { setupVant } from './plugins/vant'
 import { setupElement } from './plugins/element'
+
+import ClientPlugin from '@/clientKits'
 // 使用 element-plus
 setupElement(Vue)
 setupVant(Vue)
 Vue.use(VueCompositionApi)
+Vue.use(ClientPlugin)
 Vue.config.productionTip = false
 
 const eventBus = {

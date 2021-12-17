@@ -44,3 +44,8 @@ export const line2Hump = function (strName) {
 export const hump2line = function (strName) {
   return strName.replace(/([A-Z])/g, '-$1').toLowerCase()
 }
+
+export const firstLetterUpper = function (str) {
+  if (!str) return ''
+  return str[0].toUpperCase() + str.slice(1)
+}

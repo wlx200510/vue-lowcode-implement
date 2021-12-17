@@ -129,7 +129,7 @@
         </el-tabs>
       </el-tab-pane>
 
-      <el-tab-pane v-if="tags.indexOf('tel') > -1" label="拨打电话" name="tel">
+      <el-tab-pane v-if="tabs.indexOf('tel') > -1" label="拨打电话" name="tel">
         <el-form label-width="100px">
           <el-form-item label="电话号码：">
             <el-input
