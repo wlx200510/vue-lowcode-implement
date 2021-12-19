@@ -15,21 +15,21 @@
 
       <template v-if="option.base && option.base.length">
         <template v-for="(item, idx) in option.base">
-          <form-item :item="item" :index="idx"></form-item>
+          <form-item :item="item" :index="idx" :key="idx + 'base'"></form-item>
         </template>
       </template>
 
       <template v-if="option.style && option.style.length">
         <h3><i class="el-icon-setting"></i> 样式配置</h3>
         <template v-for="(item, idx) in option.style">
-          <form-item :item="item" :index="idx"></form-item>
+          <form-item :item="item" :index="idx" :key="idx + 'style'"></form-item>
         </template>
       </template>
 
       <template v-if="option.others && option.others.config.length">
         <h3><i class="el-icon-setting"></i> {{ option.others.title }}</h3>
         <template v-for="(item, idx) in option.others.config">
-          <form-item :item="item" :index="idx"></form-item>
+          <form-item :item="item" :index="idx" :key="idx + 'other'"></form-item>
         </template>
       </template>
 
@@ -39,18 +39,10 @@
         <h3><i class="el-icon-setting"></i> {{ option.action.title }}</h3>
         <Settings
           :name="option.name"
-          :config="option.action.config"
-          :style="option.style"
+          :base="option.base"
+          :settings="option.settings"
+          :styleArr="option.style"
         ></Settings>
-        <template v-if="option.action.type === 'image-click'">
-          <el-button
-            icon="el-icon-plus"
-            :disabled="!option.style[1].val"
-            round
-            @click="imageClickShow = true"
-            >点击区域配置</el-button
-          >
-        </template>
       </template>
     </el-form>
   </div>

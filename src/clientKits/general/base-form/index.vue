@@ -49,7 +49,7 @@ export default {
       labelStyle: this.getLabelStyle(),
       inputStyle: this.getInputStyle(),
       buttonStyle: this.getButtonStyle(),
-      inputs: this.component.action.config || [],
+      inputs: this.component.settings.config || [],
     }
   },
   methods: {
@@ -116,7 +116,7 @@ export default {
         this.labelStyle = this.getLabelStyle()
         this.inputStyle = this.getInputStyle()
         this.buttonStyle = this.getButtonStyle()
-        this.inputs = this.component.action.config
+        this.inputs = this.component.settings.config
       },
       deep: true,
     },

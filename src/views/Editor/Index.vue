@@ -94,11 +94,12 @@
     <appPageOpt v-else :option="pageConfig"></appPageOpt>
 
     <clickConfig
-      :show.sync="clickShow"
+      v-if="clickShow"
       :option="currentConfig"
       :comps="compList"
       :index="click.index"
       :tabs="click.tabs"
+      @close="clickShow = false"
     ></clickConfig>
   </div>
 </template>
@@ -221,7 +222,7 @@ function drop(e) {
   const target = e.target
   target.classList.remove('active')
   const key = e.dataTransfer.getData('cmp-type')
-  if (key === 'bottom-menu') return
+  // if (key === 'bottom-menu') return
   const idx = parseInt(target.dataset.index)
   if (compConfig[key]) {
     resetCompUnchecked()
@@ -235,11 +236,11 @@ function dragleave(e) {
 }
 // 拖动后放置相关逻辑
 function dropPhone(e) {
-  const target = document.querySelector('.place-holder:last-child')
+  const target = e.target.querySelector('.place-holder:last-child')
   if (target) {
     target.classList.remove('active')
     const key = e.dataTransfer.getData('cmp-type')
-    const idx = parseInt(target.dataset.index)
+    const idx = parseInt(target.dataset.index || -1) + 1
     if (compConfig[key]) {
       // 这里针对只能放置一个的组件处理，可以通过属性来搞
       if (key === 'bottom-menu') {
@@ -294,21 +295,21 @@ function clickBtmMenu(e) {
 
 onMounted(() => {
   $bus.$on('click:show', (idx, tabs) => {
-    click.index.value = idx
+    click.index = idx
     if (Array.isArray(tabs) && tabs.length) {
-      click.tabs.value = tabs
+      click.tabs = tabs
     } else {
-      click.tabs.value = ['outside', 'page', 'tel']
+      click.tabs = ['outside', 'page', 'tel']
     }
     clickShow.value = true
   })
   $bus.$on('click:submit', (idx, config) => {
     if (idx > -1 && config) {
       if (currentIndex.value >= 0) {
-        compList.value[currentIndex.value].action.config[idx].click = config
+        compList.value[currentIndex.value].settings.clicks[idx].click = config
       } else if (currentIndex.value === -2) {
         // 底部导航栏点击配置
-        bottomMenu.value.action.config[idx].click = config
+        bottomMenu.value.settings.clicks[idx].click = config
       }
     }
   })

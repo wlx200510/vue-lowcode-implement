@@ -1,4 +1,4 @@
-import { isArrayNoneEmpty } from '../utils/tool'
+import { isArrayNoneEmpty, firstLetterUpper } from '../utils/tool'
 import loadFormModules from './loader/setting'
 import loadConfModules from './loader/conf'
 
@@ -54,10 +54,10 @@ function loadSettingKitList() {
 
   for (const config of configs) {
     const { folderKey } = config
+    config.name = firstLetterUpper(config.name)
     const vm = templates.find((it) => it.folderKey === folderKey)
-
     if (vm) {
-      BackendKitList.push(new KitBackend(config, vm))
+      BackendKitList.push(new SettingKit(config, vm))
     } else {
       console.warn(`[kit.backend.controller] cannot match ${folderKey}`)
     }
@@ -68,9 +68,15 @@ function loadSettingKitList() {
 
 export default {
   getKit(name = '') {
-    const list = loadBackendKitList()
+    const list = loadSettingKitList()
     const kit = list.find((it) => it.name === name)
     return kit || null
+  },
+
+  getVM(name = '') {
+    const list = loadSettingKitList()
+    const kit = list.find((it) => it.name === name)
+    return kit ? kit.vm : null
   },
 
   getKitCategory(ownere = '*', backendConfig) {

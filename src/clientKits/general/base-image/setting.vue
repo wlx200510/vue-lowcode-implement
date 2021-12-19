@@ -1,93 +1,110 @@
 <template>
-  <el-dialog
-    id="imageClick"
-    title="图片跳转配置"
-    :close-on-click-modal="false"
-    :append-to-body="false"
-    :visible.sync="dialogShow"
-    @close="$emit('update:show', false)"
-    width="780px"
-  >
-    <el-row>
-      <el-col :span="12" style="text-align: center; width: 375px">
-        <div class="area-container" id="areaMap">
-          <img class="area-img" :src="img" />
-        </div>
-        <!--拖动区域的模板-->
-        <div
-          class="crop-box"
-          id="cropBox-0"
-          data-index="0"
-          style="display: none; width: 225px; height: 64px; left: 0px; top: 0px"
-        >
-          <div class="crop-box-content"></div>
-          <span class="cropper-point point-e" data-direct="e"></span>
-          <span class="cropper-point point-n" data-direct="n"></span>
-          <span class="cropper-point point-w" data-direct="w"></span>
-          <span class="cropper-point point-s" data-direct="s"></span>
-          <span class="cropper-point point-ne" data-direct="ne"></span>
-          <span class="cropper-point point-nw" data-direct="nw"></span>
-          <span class="cropper-point point-sw" data-direct="sw"></span>
-          <span class="cropper-point point-se" data-direct="se"></span>
-        </div>
-      </el-col>
-      <el-col :span="12" class="form-right-list">
-        <el-form label-width="90px">
-          <template v-for="(area, idx) in areas">
-            <el-form-item
-              :class="['small', current === idx ? 'edit' : '']"
-              :data-index="idx"
-              label="配置点击："
-            >
-              <span :class="['right-list-span', area.click ? '' : 'warn']">
-                {{ area.click ? area.click.href : '尚未配置' }}</span
+  <div>
+    <el-dialog
+      id="imageClick"
+      title="图片跳转配置"
+      :close-on-click-modal="false"
+      :append-to-body="false"
+      :visible.sync="dialogShow"
+      @close="dialogShow = false"
+      width="780px"
+    >
+      <el-row>
+        <el-col :span="12" style="text-align: center; width: 375px">
+          <div class="area-container" id="areaMap">
+            <img class="area-img" :src="styleArr[1].val" />
+          </div>
+          <!--拖动区域的模板-->
+          <div
+            class="crop-box"
+            id="cropBox-0"
+            data-index="0"
+            style="
+              display: none;
+              width: 225px;
+              height: 64px;
+              left: 0px;
+              top: 0px;
+            "
+          >
+            <div class="crop-box-content"></div>
+            <span class="cropper-point point-e" data-direct="e"></span>
+            <span class="cropper-point point-n" data-direct="n"></span>
+            <span class="cropper-point point-w" data-direct="w"></span>
+            <span class="cropper-point point-s" data-direct="s"></span>
+            <span class="cropper-point point-ne" data-direct="ne"></span>
+            <span class="cropper-point point-nw" data-direct="nw"></span>
+            <span class="cropper-point point-sw" data-direct="sw"></span>
+            <span class="cropper-point point-se" data-direct="se"></span>
+          </div>
+        </el-col>
+        <el-col :span="12" class="form-right-list">
+          <el-form label-width="90px">
+            <template v-for="(area, idx) in areas">
+              <el-form-item
+                :class="['small', current === idx ? 'edit' : '']"
+                :data-index="idx"
+                :key="idx + 'item_image'"
+                label="配置点击："
               >
-              <a class="right-list-a" v-if="idx > 0" @click="delArea(area, idx)"
-                ><i class="el-icon-delete"></i
-              ></a>
-              <a class="right-list-a" @click="showClick(area, idx)"
-                ><i class="el-icon-edit"></i
-              ></a>
-            </el-form-item>
-          </template>
-        </el-form>
-      </el-col>
-    </el-row>
+                <span :class="['right-list-span', area.click ? '' : 'warn']">
+                  {{ area.click ? area.click.href : '尚未配置' }}</span
+                >
+                <a
+                  class="right-list-a"
+                  v-if="idx > 0"
+                  @click="delArea(area, idx)"
+                  ><i class="el-icon-delete"></i
+                ></a>
+                <a class="right-list-a" @click="showClick(area, idx)"
+                  ><i class="el-icon-edit"></i
+                ></a>
+              </el-form-item>
+            </template>
+          </el-form>
+        </el-col>
+      </el-row>
 
-    <div slot="footer" class="dialog-footer">
-      <el-button type="primary" @click="dialogShow = false">确 定</el-button>
-    </div>
-  </el-dialog>
+      <div slot="footer" class="dialog-footer">
+        <el-button type="primary" @click="saveSettings">确 定</el-button>
+      </div>
+    </el-dialog>
+    <el-button
+      icon="el-icon-plus"
+      :disabled="!styleArr[1].val"
+      round
+      @click="dialogShow = true"
+      >点击区域配置</el-button
+    >
+  </div>
 </template>
 
 <script>
 import dragArea from '@/utils/dragarea.js'
 export default {
+  name: 'BaseImage',
   props: {
-    show: {
-      type: Boolean,
-      default: false,
-    },
     clicks: {
       type: Array,
     },
-    img: {
-      type: String,
+    styleArr: {
+      type: Array,
     },
   },
   data() {
     return {
       areas: this.clicks,
       current: 0,
-      dialogShow: this.show,
+      dialogShow: false,
     }
   },
   watch: {
-    clicks(list) {
-      this.areas = list
+    clicks: {
+      handler(list) {
+        this.areas = list
+      },
     },
-    show(isShow) {
-      this.dialogShow = isShow
+    dialogShow(isShow) {
       this.current = 0
       if (isShow) {
         this.$nextTick(() => {
@@ -147,6 +164,9 @@ export default {
     },
     showClick(area, idx) {
       this.$bus.$emit('click:show', idx)
+    },
+    saveSettings() {
+      this.dialogShow = false
     },
   },
 }

@@ -70,7 +70,7 @@ import compConfig from '@/config/comp.config.js'
 export default {
   data() {
     return {
-      inputs: this.forms,
+      inputs: this.config,
       defaultConf: util.copyObj(compConfig['base-form']),
       inputTypes: [
         {
@@ -101,17 +101,20 @@ export default {
     }
   },
   props: {
-    forms: {
+    config: {
       type: Array,
     },
   },
   watch: {
-    forms: {
+    config: {
       handler(val) {
         this.inputs = val
       },
       deep: true,
     },
+  },
+  mounted() {
+    console.log(this.config, '***')
   },
   methods: {
     upInput(idx) {

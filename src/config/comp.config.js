@@ -230,7 +230,9 @@ module.exports = {
     action: {
       type: 'image-click',
       title: '点击区域配置',
-      config: [
+    },
+    settings: {
+      clicks: [
         {
           index: 0,
           x: 0,
@@ -532,6 +534,8 @@ module.exports = {
     action: {
       type: 'form-submit',
       title: '表单项配置',
+    },
+    settings: {
       config: [
         {
           desc: '字段描述：',

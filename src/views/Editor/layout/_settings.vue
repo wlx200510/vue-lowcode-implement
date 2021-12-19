@@ -3,15 +3,19 @@ import settingControl from '@/kitLoader/backend'
 
 export default {
   props: {
-    config: { required: true, type: Object },
+    base: { required: false, type: Array },
+    settings: { required: true, type: Object },
     name: { required: true, type: String },
-    style: { required: true, type: Array },
+    styleArr: { required: true, type: Array },
   },
 
   render(h) {
-    const vmOption = settingControl.getKit(this.name)
+    if (this.settings.base) {
+      console.warn('base props will replace origin base props array')
+    }
+    const vmOption = settingControl.getVM(this.name)
 
-    if (!vmOptions) {
+    if (!vmOption) {
       console.error(`${this.name} comp don't find`)
       return null
     }
@@ -19,7 +23,11 @@ export default {
     const options = {
       ref: 'kitnode',
       name: this.name,
-      props: Object.assign(this.config, { style: this.style }),
+      props: {
+        styleArr: this.styleArr,
+        base: this.base,
+        ...this.settings,
+      },
       on: this.$listeners,
     }
     // B端组件同步加载即可

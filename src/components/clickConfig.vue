@@ -5,7 +5,7 @@
     :close-on-click-modal="false"
     :append-to-body="false"
     :visible.sync="dialogShow"
-    @close="emit('update:show', false)"
+    @close="emit('close')"
     width="680px"
   >
     <el-tabs v-model="currentTab" type="card" @tab-click="clickTab">
@@ -143,7 +143,7 @@
     </el-tabs>
 
     <div slot="footer" class="dialog-footer">
-      <el-button @click="emit('update:show', false)">取 消</el-button>
+      <el-button @click="emit('close')">取 消</el-button>
       <el-button type="primary" @click="sure">确 定</el-button>
     </div>
   </el-dialog>
@@ -152,10 +152,6 @@
 <script setup>
 import { ref, getCurrentInstance, watch, onMounted } from '@vue/composition-api'
 const props = defineProps({
-  show: {
-    type: Boolean,
-    default: false,
-  },
   option: {
     type: Object,
   },
@@ -169,34 +165,34 @@ const props = defineProps({
     type: Array,
   },
 })
-const emit = defineEmits(['update:show'])
+const emit = defineEmits(['close'])
 const { $bus } = getCurrentInstance().proxy
-const dialogShow = ref(props.show),
+const dialogShow = ref(true),
   codeVal = ref(''),
   currentTab = ref(''),
   outsideVal = ref(null),
   pageVal = ref(null),
-  talVal = ref('')
+  telVal = ref('')
 let returnVal = null
 
 function getCurrentTab() {
   if (props.tabs && props.tabs.length === 1) {
     return props.tabs[0]
   }
-  return props.option?.action?.config[props.index].click?.type || 'outside'
+  return props.option?.settings?.clicks[props.index].click?.type || 'outside'
 }
 
 function getVal(type) {
-  if (props.option?.action?.config[props.index]?.click) {
-    if (props.option?.action?.config[props.index]?.click.type === type) {
-      return props.option?.action?.config[props.index]?.click.href
+  if (props.option?.settings?.clicks[props.index]?.click) {
+    if (props.option?.settings?.clicks[props.index]?.click.type === type) {
+      return props.option?.settings?.clicks[props.index]?.click.href
     }
   }
   return ''
 }
 
 function getOldVal() {
-  return props.option?.action?.config[props.index]?.click || null
+  return props.option?.settings?.clicks[props.index]?.click || null
 }
 
 function setPageAction(id) {
@@ -226,15 +222,12 @@ function sure() {
   }
   $bus.$emit('click:submit', props.index, returnVal)
 }
-
-watch(dialogShow, () => {
-  if (dialogShow.value) {
-    getCurrentTab.value = getCurrentTab()
-    outsideVal.value = getVal('outside')
-    pageVal.value = getVal('page')
-    telVal.value = getVal('tel')
-    returnVal = getOldVal()
-  }
+onMounted(() => {
+  currentTab.value = getCurrentTab()
+  outsideVal.value = getVal('outside')
+  pageVal.value = getVal('page')
+  telVal.value = getVal('tel')
+  returnVal = getOldVal()
 })
 </script>
 
