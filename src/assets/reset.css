@@ -1,0 +1,36 @@
+* {
+  margin: 0;
+  padding: 0;
+  -webkit-tap-highlight-color: transparent;
+  font-variant-ligatures: none;
+}
+
+body {
+  font-size: 16px;
+  font-family: PingFangSC-Regular, 'Avenir', Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-text-size-adjust: 100%;
+  -webkit-user-select: none;
+  -webkit-tap-highlight-color: transparent;
+  color: #2c3e50;
+}
+
+html.lock,
+body.lock {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+}
+
+body.overflow-hidden {
+  overflow: hidden;
+}
+
+::-webkit-scrollbar {
+  display: none;
+}
+
+img {
+  content: normal !important;
+}
