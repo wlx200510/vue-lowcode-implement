@@ -26,13 +26,45 @@ import AppPageSetting from './layout/pageSetting.vue'
 import pageOption from '@/config/prebuild.config.js'
 
 const pageConfig = reactive(util.copyObj(pageOption))
-
-const settings = ref([])
+// 不同的页面，这个settings需要不同
+const settings = ref([
+  {
+    type: 'base-text',
+    label: '页面描述',
+    attr: 'desc',
+    placeholder: '例：双十一专题主页',
+    val: '',
+    isNecessary: true,
+  },
+])
 let handShake = null
+
+function savePageSet() {
+  console.log('save')
+}
+function getSettingData() {
+  return settings.value.reduce((origin, item) => {
+    origin[item.attr] = item.val
+    return origin
+  }, {})
+}
+
+function syncPreview() {
+  handShake.then((child) => {
+    child.call(
+      'getData',
+      JSON.stringify({
+        path: '/login',
+        title: 'example',
+        content: getSettingData(),
+      })
+    )
+  })
+}
 onMounted(() => {
   handShake = new Postmate({
     container: document.getElementById('preIframe'),
-    url: './preview.html',
+    url: 'http://localhost:3000/preview.html',
     name: 'child-iframe',
     classListArray: ['iframe-dom'],
   })
@@ -40,9 +72,9 @@ onMounted(() => {
     child.call(
       'getData',
       JSON.stringify({
-        path: '/temp',
+        path: '/login',
         title: 'example',
-        content: {},
+        content: getSettingData(),
       })
     )
   })
@@ -70,11 +102,19 @@ onMounted(() => {
       width: 100%;
       padding-top: 30px;
       padding-bottom: 30px;
-      .iframe-dom {
-        width: 375px;
-        background-color: #f2f3f4;
-      }
+      display: flex;
+      flex-direction: row;
+      justify-content: center;
+      align-items: center;
     }
   }
+}
+</style>
+<style lang="css">
+.iframe-con .iframe-dom {
+  width: 375px;
+  min-height: 800px;
+  border: 1px solid gray;
+  background-color: #f2f3f4;
 }
 </style>

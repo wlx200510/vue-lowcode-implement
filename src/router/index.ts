@@ -13,7 +13,7 @@ const routes: Array<RouteConfig> = [
     component: Editor,
   },
   {
-    path: '/PreBuild',
+    path: '/PreBuild/:pageId?',
     name: 'PreBuild',
     component: Prepage,
   },

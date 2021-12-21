@@ -1,6 +1,9 @@
 <!-- login -->
 <template>
-  <div class="login"></div>
+  <div class="login">
+    <p>登录页面</p>
+    <p>{{ pageConfig.desc }}</p>
+  </div>
 </template>
 
 <script>
@@ -9,6 +12,7 @@ export default {
   data() {
     return {}
   },
+  props: ['pageConfig'],
 
   computed: {},
 

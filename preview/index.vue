@@ -1,5 +1,5 @@
 <template>
-  <router-view :pageConfig="pageConfig"></router-view>
+  <router-view v-if="pageConfig" :pageConfig="pageConfig.content"></router-view>
 </template>
 
 <script lang="js">
@@ -8,7 +8,7 @@ export default {
   name: 'Child',
   data(){
     return {
-      pageConfig: {},
+      pageConfig: null,
       handShake: null,
     }
   },
@@ -21,7 +21,8 @@ export default {
   },
   watch: {
     'pageConfig.path': function(newVal) {
-      this.$router.replace(newVal || '/')
+      const pathRoute = newVal ? `/pre${newVal}` : '/'
+      this.$router.replace(pathRoute)
     }
   }
 }

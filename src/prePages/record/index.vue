@@ -1,6 +1,9 @@
 <!-- record -->
 <template>
-  <div class="record"></div>
+  <div class="record">
+    <h2>奖品列表</h2>
+    <p>{{ pageConfig.desc }}</p>
+  </div>
 </template>
 
 <script>
@@ -9,6 +12,7 @@ export default {
   data() {
     return {}
   },
+  props: ['pageConfig'],
 
   computed: {},
 

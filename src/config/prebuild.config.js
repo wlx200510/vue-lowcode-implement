@@ -2,7 +2,7 @@ module.exports = {
   title: '页面配置',
   base: [
     {
-      type: 'text',
+      type: 'base-text',
       label: '页面名称',
       attr: 'page-name',
       placeholder: '例：双十一专题主页',
