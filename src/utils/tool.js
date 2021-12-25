@@ -49,3 +49,30 @@ export const firstLetterUpper = function (str) {
   if (!str) return ''
   return str[0].toUpperCase() + str.slice(1)
 }
+
+export const getPageOptionData = function (config) {
+  let result = {}
+  Object.keys(config).forEach((key) => {
+    if (isArray(config[key])) {
+      result[key] = config[key].reduce((origin, data) => {
+        origin[data.attr] = data.val
+        return origin
+      }, {})
+    }
+  })
+  return result
+}
+
+export const setPageOptionData = function (data, pageOption) {
+  let result = JSON.parse(JSON.stringify(pageOption))
+  Object.keys(data).forEach((key) => {
+    if (isArray(result[key])) {
+      result[key].forEach((item) => {
+        if (data[key][item.attr]) {
+          item.val = data[key][item.attr]
+        }
+      })
+    }
+  })
+  return result
+}

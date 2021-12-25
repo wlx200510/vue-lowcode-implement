@@ -19,13 +19,14 @@ import {
   onMounted,
 } from '@vue/composition-api'
 import Postmate from 'postmate'
+import { getPageOptionData } from '@/utils/tool'
 import util from '@/utils/util.js'
 import appTopbar from './layout/topbar.vue'
 import AppPageSetting from './layout/pageSetting.vue'
 
 import pageOption from '@/config/prebuild.config.js'
 
-const pageConfig = reactive(util.copyObj(pageOption))
+const pageConfig = ref(util.copyObj(pageOption))
 // 不同的页面，这个settings需要不同
 const settings = ref([
   {
@@ -41,6 +42,15 @@ let handShake = null
 
 function savePageSet() {
   console.log('save')
+  localStorage.setItem(
+    'GLOBAL_PRE_PAGE_DATA_SET',
+    JSON.stringify({
+      time: Date.now(),
+      pageType: 1,
+      config: getSettingData(),
+      pageConfig: getPageOptionData(pageConfig.value),
+    })
+  )
 }
 function getSettingData() {
   return settings.value.reduce((origin, item) => {
@@ -54,8 +64,7 @@ function syncPreview() {
     child.call(
       'getData',
       JSON.stringify({
-        path: '/login',
-        title: 'example',
+        pageConfig: getPageOptionData(pageConfig.value),
         content: getSettingData(),
       })
     )

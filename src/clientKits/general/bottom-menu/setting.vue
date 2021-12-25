@@ -53,19 +53,19 @@ export default {
   data() {
     return {
       defaultConf: util.copyObj(compConfig['bottom-menu']),
-      menus: this.items,
+      menus: [],
     }
   },
   components: {
     upload,
   },
   props: {
-    items: {
+    config: {
       type: Array,
     },
   },
   watch: {
-    items: {
+    config: {
       handler(val) {
         this.menus = val
       },
@@ -91,8 +91,9 @@ export default {
       this.menus.splice(idx, 1)
     },
     addItem() {
-      if (this.menus.length < 10) {
-        this.menus.push(util.copyObj(this.defaultConf.action.config[0]))
+      console.log(this.menus)
+      if (this.menus.length < 5) {
+        this.menus.push(util.copyObj(this.defaultConf.settings.config[0]))
       } else {
         this.$alert('最多添加5个导航项！')
       }

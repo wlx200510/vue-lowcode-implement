@@ -20,8 +20,9 @@ export default {
     })
   },
   watch: {
-    'pageConfig.path': function(newVal) {
-      const pathRoute = newVal ? `/pre${newVal}` : '/'
+    'pageConfig.pageConfig': function(newVal) {
+      const { base } = newVal
+      const pathRoute = base.router ? `/pre${base.router}` : '/'
       this.$router.replace(pathRoute)
     }
   }

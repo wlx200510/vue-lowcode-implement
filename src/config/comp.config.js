@@ -232,7 +232,7 @@ module.exports = {
       title: '点击区域配置',
     },
     settings: {
-      clicks: [
+      config: [
         {
           index: 0,
           x: 0,
@@ -1031,10 +1031,15 @@ module.exports = {
     action: {
       type: 'bottom-menu-click',
       title: '点击项配置',
+    },
+    settings: {
       config: [
         {
-          val: '',
+          desc: '点击项配置',
+          type: 'text',
+          name: 'click',
           click: null,
+          val: '',
         },
       ],
     },

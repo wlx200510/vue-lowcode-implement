@@ -32,10 +32,15 @@
               :data-index="idx"
               @click.capture="clickComp"
             >
-              <component :is="comp.name" :component="comp"></component>
+              <component
+                :is="comp.name"
+                :component="comp"
+                :preview="true"
+              ></component>
               <!--控件操作-->
               <div class="comp-menu">
                 <a
+                  v-if="!comp.fixed"
                   href="javascript:void(0)"
                   :class="[idx == 0 ? 'disabled' : '']"
                   @click="upComp(idx)"
@@ -44,6 +49,7 @@
                   <i class="fa fa-arrow-circle-up"></i>
                 </a>
                 <a
+                  v-if="!comp.fixed"
                   href="javascript:void(0)"
                   :class="[idx == compList.length - 1 ? 'disabled' : '']"
                   @click="downComp(idx)"
@@ -110,11 +116,17 @@ import {
   reactive,
   getCurrentInstance,
   watch,
+  computed,
   watchEffect,
   onMounted,
 } from '@vue/composition-api'
 import util from '@/utils/util.js'
-import { line2Hump, firstLetterUpper } from '@/utils/tool'
+import {
+  line2Hump,
+  firstLetterUpper,
+  getPageOptionData,
+  setPageOptionData,
+} from '@/utils/tool'
 import appSidebar from './layout/sidebar.vue'
 import appToolbar from './layout/toolbar.vue'
 import appOpt from './layout/option.vue'
@@ -132,10 +144,10 @@ const clickShow = ref(false),
   previewShow = ref(false),
   compList = ref([]),
   bottomMenu = ref(null),
-  pageConfig = reactive(util.copyObj(pageOption)),
   currentIndex = ref(-1),
   currentConfig = ref(null)
 
+let pageConfig = ref(util.copyObj(pageOption))
 let click = reactive({
   index: 0,
   tabs: [],
@@ -143,16 +155,21 @@ let click = reactive({
 
 watchEffect(() => {
   if (compList.value && compList.value.length > 1) {
+    // 这个数据结构考虑增加页面路由/名称/页面配置config信息，还有是否是预制页面
+    // 后续用这个来还原C端页面
     localStorage.setItem(
       'GLOBAL_PAGE_DATA_SET',
       JSON.stringify({
         time: Date.now(),
         config: compList.value,
-        menu: bottomMenu.value,
+        pageConfig: getPageOptionData(pageConfig.value),
+        pageType: 0,
       })
     )
   }
 })
+
+const hasFixedComp = computed(() => compList.value.some((item) => item.fixed))
 
 function addComp(index, key) {
   const comp = util.copyObj(compConfig[key])
@@ -163,10 +180,38 @@ function addComp(index, key) {
     domId: key + '-' + util.createDomID(),
   }
   Object.assign(comp, config)
-  compList.value.splice(index + 1, 0, comp)
-  // 显示配置项
-  currentIndex.value = index + 1
-  currentConfig.value = comp
+  insertCompAndSelect(comp, index)
+}
+// 拖动放置底部导航的组件，这个单独处理的，感觉可以当成一般组件来处理，@todo待优化
+function addBottomMenu(index, key) {
+  const comp = util.copyObj(compConfig[key])
+  const config = {
+    type: key,
+    name: firstLetterUpper(line2Hump(key)),
+    active: true,
+    domId: key + '-' + util.createDomID(),
+    fixed: true,
+  }
+  Object.assign(comp, config)
+  insertCompAndSelect(comp, index)
+}
+function insertCompAndSelect(compData, index) {
+  // 把fixed为true的放在最后
+  // fixed为true的只能有一个元素 ———— 需要保证
+  if (compData.fixed) {
+    compList.value.push(compData)
+    currentIndex.value = compList.value.length + 1
+  } else {
+    if (hasFixedComp.value && index === compList.value.length) {
+      compList.value.splice(index - 1, 0, compData)
+      currentIndex.value = index
+    } else {
+      compList.value.splice(index + 1, 0, compData)
+      currentIndex.value = index + 1
+    }
+    // 显示配置项
+  }
+  currentConfig.value = compData
 }
 function clickComp(e) {
   if (bottomMenu.value) bottomMenu.value.active = false
@@ -222,11 +267,20 @@ function drop(e) {
   const target = e.target
   target.classList.remove('active')
   const key = e.dataTransfer.getData('cmp-type')
-  // if (key === 'bottom-menu') return
-  const idx = parseInt(target.dataset.index)
+  const idx = parseInt(target.dataset.index || -1) + 1
   if (compConfig[key]) {
-    resetCompUnchecked()
-    addComp(idx, key)
+    // 这里针对只能放置一个的组件处理，可以通过属性来搞
+    if (key === 'bottom-menu') {
+      if (hasFixedComp.value) {
+        $message.info('已经存在一个底部导航组件了，请勿重复添加！')
+      } else {
+        resetCompUnchecked()
+        addBottomMenu(idx, key)
+      }
+    } else {
+      resetCompUnchecked()
+      addComp(idx, key)
+    }
   } else {
     $message.warning('没有查询到该组件的配置信息。。。')
   }
@@ -244,10 +298,11 @@ function dropPhone(e) {
     if (compConfig[key]) {
       // 这里针对只能放置一个的组件处理，可以通过属性来搞
       if (key === 'bottom-menu') {
-        if (bottomMenu.value) {
+        if (hasFixedComp.value) {
           $message.info('已经存在一个底部导航组件了，请勿重复添加！')
         } else {
-          addBottomMenu()
+          resetCompUnchecked()
+          addBottomMenu(idx, key)
         }
       } else {
         resetCompUnchecked()
@@ -267,31 +322,6 @@ function dragPhoneOver() {
   if (target && !target.classList.contains('active'))
     target.classList.add('active')
 }
-// 拖动放置底部导航的组件，这个单独处理的，感觉可以当成一般组件来处理，@todo待优化
-function addBottomMenu() {
-  const comp = util.copyObj(compConfig['bottom-menu'])
-  const config = {
-    type: 'bottom-menu',
-    active: true,
-    domId: 'bottom-menu-' + util.createDomID(),
-  }
-  Object.assign(comp, config)
-  bottomMenu.value = comp
-  // 显示配置项
-  currentIndex.value = -1
-  currentConfig.value = comp
-}
-function delBtmMenu() {
-  bottomMenu.value = null
-  // 显示页面配置参数
-  showPageSet()
-}
-function clickBtmMenu(e) {
-  resetCompUnchecked()
-  if (bottomMenu.value) bottomMenu.value.active = true
-  currentIndex.value = -2
-  currentConfig.value = bottomMenu.value
-}
 
 onMounted(() => {
   $bus.$on('click:show', (idx, tabs) => {
@@ -305,12 +335,7 @@ onMounted(() => {
   })
   $bus.$on('click:submit', (idx, config) => {
     if (idx > -1 && config) {
-      if (currentIndex.value >= 0) {
-        compList.value[currentIndex.value].settings.clicks[idx].click = config
-      } else if (currentIndex.value === -2) {
-        // 底部导航栏点击配置
-        bottomMenu.value.settings.clicks[idx].click = config
-      }
+      compList.value[currentIndex.value].settings.config[idx].click = config
     }
   })
 })
@@ -320,18 +345,32 @@ function showPageSet() {
   currentConfig.value = null
 }
 function savePageSet() {
-  console.warn('save Info: ', JSON.stringify(compList.value))
+  console.warn(
+    'save Info: ',
+    JSON.stringify({
+      config: compList.value,
+      pageConfig: getPageOptionData(pageConfig.value),
+      pageType: 0,
+    })
+  )
   $message({
     message: '打开chomre devtool查看保存的信息！',
     type: 'success',
   })
 }
 function showPreview() {
-  localStorage.setItem('GLOBAL_PAGE_DATA_SET', JSON.stringify(pageConfig.value))
+  localStorage.setItem(
+    'GLOBAL_PAGE_DATA_SET',
+    JSON.stringify({
+      time: Date.now(),
+      config: compList.value,
+      pageConfig: getPageOptionData(pageConfig.value),
+      pageType: 0,
+    })
+  )
   previewShow.value = true
 }
 function resetCompUnchecked() {
-  if (bottomMenu.value) bottomMenu.value.active = false
   compList.value.forEach((val) => {
     if (val.active) {
       val.active = false
@@ -355,10 +394,15 @@ function readLocalData() {
     )
       .then(() => {
         compList.value = localData.config
-        bottomMenu.value = localData.menu
+        // 此处需要用还原函数
+        pageConfig.value = setPageOptionData(
+          localData.pageConfig,
+          pageConfig.value
+        )
         resetCompUnchecked()
       })
-      .catch(() => {
+      .catch((e) => {
+        console.log(e)
         localStorage.setItem('GLOBAL_PAGE_DATA_SET', '')
       })
   }

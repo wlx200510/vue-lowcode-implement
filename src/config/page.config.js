@@ -4,7 +4,7 @@ module.exports = {
     {
       type: 'base-text',
       label: '页面名称',
-      attr: 'page-name',
+      attr: 'name',
       placeholder: '例：双十一专题主页',
       val: '',
       isNecessary: true,
@@ -27,14 +27,14 @@ module.exports = {
       isNecessary: false,
     },
     {
-      type: 'text',
-      label: '文件名称',
-      attr: 'page-name',
+      type: 'base-text',
+      label: '路由名称',
+      attr: 'router',
       rules: {
-        regex: '^[0-9a-zA-Z_]{1,}$',
-        tips: '只能输入字母、数字或者下划线',
+        regex: '^[0-9a-z_-]{1,}$',
+        tips: '只能输入字母、数字、中划线或者下划线',
       },
-      placeholder: '生成的html文件名称',
+      placeholder: 'hash路由对应的名称',
       val: '',
       isNecessary: true,
     },
@@ -79,7 +79,7 @@ module.exports = {
   ],
   weixin: [
     {
-      type: 'text',
+      type: 'base-text',
       label: 'jssdk api',
       attr: 'page-share-api',
       placeholder: '微信分享接口地址',
@@ -87,7 +87,7 @@ module.exports = {
       isNecessary: true,
     },
     {
-      type: 'text',
+      type: 'base-text',
       label: '跳转地址',
       attr: 'page-share-url',
       placeholder: '跳转地址，不填则代表当前页',
@@ -95,7 +95,7 @@ module.exports = {
       isNecessary: false,
     },
     {
-      type: 'text',
+      type: 'base-text',
       label: '分享标题',
       attr: 'page-share-title',
       placeholder: '微信分享的标题',
@@ -120,6 +120,7 @@ module.exports = {
     {
       type: 'desc',
       label: '使用说明',
+      attr: 'desc',
       val: `获取微信签名的接口请使用get(application/json)方式，跨域需接口支持，返回格式如下：<br/>
            {
               data: {

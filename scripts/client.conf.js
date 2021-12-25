@@ -7,7 +7,7 @@ module.exports = function (params = {}) {
     outputDir: 'dist/client',
     pages: {
       client: {
-        entry: 'client/main.js',
+        entry: 'client/index.js',
         template: 'client/index.html',
         filename: 'index.html',
         title: '',

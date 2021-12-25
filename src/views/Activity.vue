@@ -109,7 +109,7 @@ function handleEdit(index, row) {
 }
 function handleDelete(index, row) {
   console.log(index, row)
-  $confirm('此操作将永久删除该活动, 是否继续?', '提示', {
+  $confirm('此操作将永久删除该活动页面, 是否继续?', '提示', {
     confirmButtonText: '确定',
     cancelButtonText: '取消',
     type: 'warning',

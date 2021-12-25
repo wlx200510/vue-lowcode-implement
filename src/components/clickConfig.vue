@@ -179,20 +179,20 @@ function getCurrentTab() {
   if (props.tabs && props.tabs.length === 1) {
     return props.tabs[0]
   }
-  return props.option?.settings?.clicks[props.index].click?.type || 'outside'
+  return props.option?.settings?.config[props.index].click?.type || 'outside'
 }
 
 function getVal(type) {
-  if (props.option?.settings?.clicks[props.index]?.click) {
-    if (props.option?.settings?.clicks[props.index]?.click.type === type) {
-      return props.option?.settings?.clicks[props.index]?.click.href
+  if (props.option?.settings?.config[props.index]?.click) {
+    if (props.option?.settings?.config[props.index]?.click.type === type) {
+      return props.option?.settings?.config[props.index]?.click.href
     }
   }
   return ''
 }
 
 function getOldVal() {
-  return props.option?.settings?.clicks[props.index]?.click || null
+  return props.option?.settings?.config[props.index]?.click || null
 }
 
 function setPageAction(id) {
@@ -224,9 +224,19 @@ function sure() {
 }
 onMounted(() => {
   currentTab.value = getCurrentTab()
-  outsideVal.value = getVal('outside')
-  pageVal.value = getVal('page')
-  telVal.value = getVal('tel')
+  props.tabs.forEach((item) => {
+    switch (item) {
+      case 'outside':
+        outsideVal.value = getVal('outside')
+        break
+      case 'page':
+        pageVal.value = getVal('page')
+        break
+      case 'tel':
+        telVal.value = getVal('tel')
+        break
+    }
+  })
   returnVal = getOldVal()
 })
 </script>

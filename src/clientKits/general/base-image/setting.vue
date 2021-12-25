@@ -84,7 +84,7 @@ import dragArea from '@/utils/dragarea.js'
 export default {
   name: 'BaseImage',
   props: {
-    clicks: {
+    config: {
       type: Array,
     },
     styleArr: {
@@ -93,13 +93,13 @@ export default {
   },
   data() {
     return {
-      areas: this.clicks,
+      areas: this.config,
       current: 0,
       dialogShow: false,
     }
   },
   watch: {
-    clicks: {
+    config: {
       handler(list) {
         this.areas = list
       },

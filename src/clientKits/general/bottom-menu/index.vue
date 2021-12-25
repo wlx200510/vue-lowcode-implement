@@ -1,12 +1,27 @@
 <template>
-  <div class="bottom-menu" :style="getStyle">
-    <div
-      class="menu-item"
-      :style="{ width: 750 / menus.length + 'px' }"
-      v-for="item in menus"
-    >
-      <img v-if="item.val" :src="item.val" />
-      <div v-else class="image-placeholder"><i class="fa fa-adjust"></i></div>
+  <div>
+    <div class="bottom-menu fix-bottom" :style="getStyle">
+      <div
+        class="menu-item"
+        :style="{ width: 750 / menus.length + 'px' }"
+        v-for="item in menus"
+      >
+        <img v-if="item.val" :src="item.val" />
+        <div v-else class="image-placeholder"><i class="fa fa-adjust"></i></div>
+      </div>
+    </div>
+    <div class="bottom-menu" :style="getStyle">
+      <div
+        class="menu-item"
+        :style="{
+          width: 750 / menus.length + 'px',
+          visibility: $attrs.preview ? 'visible' : 'hidden',
+        }"
+        v-for="item in menus"
+      >
+        <img v-if="item.val" :src="item.val" />
+        <div v-else class="image-placeholder"><i class="fa fa-adjust"></i></div>
+      </div>
     </div>
   </div>
 </template>
@@ -21,7 +36,7 @@ export default {
   },
   data() {
     return {
-      menus: this.component.action.config,
+      menus: this.component.settings.config,
     }
   },
   computed: {
@@ -39,7 +54,7 @@ export default {
   watch: {
     component: {
       handler() {
-        this.menus = this.component.action.config
+        this.menus = this.component.settings.config
       },
       deep: true,
     },
@@ -48,6 +63,12 @@ export default {
 </script>
 
 <style rel="stylesheet/scss" lang="scss" scoped>
+.fix-bottom {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+}
 .bottom-menu {
   display: flex;
   -webkit-box-pack: justify;

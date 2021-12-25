@@ -72,7 +72,7 @@ export default {
     title: '点击区域配置',
   },
   settings: {
-    clicks: [
+    config: [
       {
         index: 0,
         x: 0,
