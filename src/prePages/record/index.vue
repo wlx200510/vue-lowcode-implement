@@ -1,7 +1,7 @@
 <!-- record -->
 <template>
   <div class="record">
-    <h2>奖品列表</h2>
+    <h2 :style="{ color: pageConfig.color }">奖品列表</h2>
     <p>{{ pageConfig.desc }}</p>
   </div>
 </template>
@@ -17,9 +17,6 @@ export default {
   computed: {},
 
   methods: {},
-
-  created() {},
-  mounted() {},
 }
 </script>
-<style lang="less" scoped></style>
+<style lang="scss" scoped></style>

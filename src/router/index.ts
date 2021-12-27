@@ -8,12 +8,12 @@ import Page from '../views/Page.vue'
 
 const routes: Array<RouteConfig> = [
   {
-    path: '/Editor/:pageId?',
+    path: '/Editor/:id/:pageId?',
     name: 'Editor',
     component: Editor,
   },
   {
-    path: '/PreBuild/:pageId?',
+    path: '/PreBuild/:id/:pageId?',
     name: 'PreBuild',
     component: Prepage,
   },

@@ -1,0 +1,287 @@
+{
+  "id": 0,
+  "createDate": "2021-11-01",
+  "projectName": "赠送课时",
+  "projectType": "Recommend",
+  "projectDesc": "",
+  "pages": [
+    {
+      "pageId": 1,
+      "showPageName": "首页",
+      "pageType": 0,
+      "thumbnail": {
+        "width": 235,
+        "height": 236,
+        "val": "https://shadow.elemecdn.com/app/element/hamburger.9cf7b091-55e9-11e9-a976-7f4d0b07eef6.png"
+      },
+      "config": [
+        {
+          "title": "图片",
+          "domId": "base-image-9cc5xcmdob",
+          "domName": "",
+          "style": [
+            {
+              "type": "color-picker",
+              "label": "背景颜色",
+              "attr": "background-color",
+              "val": "",
+              "isNecessary": false
+            },
+            {
+              "type": "upload",
+              "label": "上传图片",
+              "attr": "src",
+              "val": "",
+              "isNecessary": true
+            },
+            {
+              "type": "input-number",
+              "label": "上边距",
+              "attr": "padding-top",
+              "val": 0,
+              "unit": "px",
+              "min": 0,
+              "max": 50,
+              "step": 1,
+              "isNecessary": true
+            },
+            {
+              "type": "input-number",
+              "label": "右边距",
+              "attr": "padding-right",
+              "val": 0,
+              "unit": "px",
+              "min": 0,
+              "max": 50,
+              "step": 1,
+              "isNecessary": true
+            },
+            {
+              "type": "input-number",
+              "label": "下边距",
+              "attr": "padding-bottom",
+              "val": 0,
+              "unit": "px",
+              "min": 0,
+              "max": 50,
+              "step": 1,
+              "isNecessary": true
+            },
+            {
+              "type": "input-number",
+              "label": "左边距",
+              "attr": "padding-left",
+              "val": 0,
+              "unit": "px",
+              "min": 0,
+              "max": 50,
+              "step": 1,
+              "isNecessary": true
+            }
+          ],
+          "action": {
+            "type": "image-click",
+            "title": "点击区域配置"
+          },
+          "settings": {
+            "config": [
+              {
+                "index": 0,
+                "x": 0,
+                "y": 0,
+                "w": 225,
+                "h": 64,
+                "click": null
+              }
+            ]
+          },
+          "type": "base-image",
+          "name": "BaseImage",
+          "active": false
+        },
+        {
+          "title": "图片",
+          "domId": "base-image-1wl5lfyhptl",
+          "domName": "",
+          "style": [
+            {
+              "type": "color-picker",
+              "label": "背景颜色",
+              "attr": "background-color",
+              "val": "",
+              "isNecessary": false
+            },
+            {
+              "type": "upload",
+              "label": "上传图片",
+              "attr": "src",
+              "val": "",
+              "isNecessary": true
+            },
+            {
+              "type": "input-number",
+              "label": "上边距",
+              "attr": "padding-top",
+              "val": 0,
+              "unit": "px",
+              "min": 0,
+              "max": 50,
+              "step": 1,
+              "isNecessary": true
+            },
+            {
+              "type": "input-number",
+              "label": "右边距",
+              "attr": "padding-right",
+              "val": 0,
+              "unit": "px",
+              "min": 0,
+              "max": 50,
+              "step": 1,
+              "isNecessary": true
+            },
+            {
+              "type": "input-number",
+              "label": "下边距",
+              "attr": "padding-bottom",
+              "val": 0,
+              "unit": "px",
+              "min": 0,
+              "max": 50,
+              "step": 1,
+              "isNecessary": true
+            },
+            {
+              "type": "input-number",
+              "label": "左边距",
+              "attr": "padding-left",
+              "val": 0,
+              "unit": "px",
+              "min": 0,
+              "max": 50,
+              "step": 1,
+              "isNecessary": true
+            }
+          ],
+          "action": {
+            "type": "image-click",
+            "title": "点击区域配置"
+          },
+          "settings": {
+            "config": [
+              {
+                "index": 0,
+                "x": 0,
+                "y": 0,
+                "w": 225,
+                "h": 64,
+                "click": null
+              }
+            ]
+          },
+          "type": "base-image",
+          "name": "BaseImage",
+          "active": false
+        },
+        {
+          "title": "底部导航",
+          "domId": "bottom-menu-7asrrzp9wv",
+          "domName": "",
+          "style": [
+            {
+              "type": "input-number",
+              "label": "容器高度",
+              "attr": "height",
+              "val": 40,
+              "unit": "px",
+              "min": 0,
+              "max": 100,
+              "step": 1,
+              "isNecessary": false
+            },
+            {
+              "type": "color-picker",
+              "label": "背景颜色",
+              "attr": "background-color",
+              "val": "#ffffff",
+              "isNecessary": false
+            }
+          ],
+          "action": {
+            "type": "bottom-menu-click",
+            "title": "点击项配置"
+          },
+          "settings": {
+            "config": [
+              {
+                "desc": "点击项配置",
+                "type": "text",
+                "name": "click",
+                "click": null,
+                "val": ""
+              }
+            ]
+          },
+          "type": "bottom-menu",
+          "name": "BottomMenu",
+          "active": false,
+          "fixed": true
+        }
+      ],
+      "pageConfig": {
+        "base": {
+          "name": "主页",
+          "gotop": true,
+          "router": "main"
+        },
+        "style": {
+          "background-color": "#ffffff",
+          "background-image": "",
+          "background-repeat": ""
+        },
+        "weixin": {
+          "page-share-api": "",
+          "page-share-url": "",
+          "page-share-title": "",
+          "page-share-desc": "",
+          "page-share-icon": "",
+          "desc": "获取微信签名的接口请使用get(application/json)方式，跨域需接口支持，返回格式如下：<br/>\n           {\n              data: {\n                appId: 'appId',\n                timestamp: 15888888,\n                nonceStr: 'nonceStr',\n                signature: 'signature',\n              },\n              msg: '不为空则提示该消息'\n           }"
+        }
+      }
+    },
+    {
+      "showPageName": "test2",
+      "pageType": 1,
+      "thumbnail": {
+        "width": 750,
+        "height": 750.0047999999999,
+        "val": "data:image/png;base64,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"
+      },
+      "pageId": 2,
+      "prePageData": {
+        "folderKey": "./record",
+        "name": "记录页面",
+        "router": "record",
+        "settings": [
+          {
+            "attr": "desc",
+            "isNecessary": true,
+            "label": "页面内容",
+            "placeholder": "输入页面内容",
+            "type": "base-text",
+            "val": ""
+          },
+          {
+            "attr": "color",
+            "isNecessary": true,
+            "label": "字体颜色",
+            "type": "color-picker",
+            "val": "#999999"
+          }
+        ]
+      },
+      "config": null,
+      "pageConfig": null
+    }
+  ]
+}

@@ -10,31 +10,16 @@ module.exports = {
       isNecessary: true,
     },
     {
-      type: 'radio',
-      label: '回到顶部',
-      attr: 'gotop',
-      val: true,
-      options: [
-        {
-          name: '显示',
-          val: true,
-        },
-        {
-          name: '不显示',
-          val: false,
-        },
-      ],
-      isNecessary: false,
-    },
-    {
-      type: 'base-text',
+      type: 'desc',
       label: '路由名称',
       attr: 'router',
-      rules: {
-        regex: '^[0-9a-z_-]{1,}$',
-        tips: '只能输入字母、数字、中划线或者下划线',
-      },
-      placeholder: 'hash路由对应的名称',
+      val: '',
+      isNecessary: true,
+    },
+    {
+      type: 'desc',
+      label: '文件位置',
+      attr: 'position',
       val: '',
       isNecessary: true,
     },

@@ -19,26 +19,52 @@ import {
   onMounted,
 } from '@vue/composition-api'
 import Postmate from 'postmate'
-import { getPageOptionData } from '@/utils/tool'
+import { useRouter } from 'vue2-helpers/vue-router'
+import { getPageOptionData, setPageOptionData } from '@/utils/tool'
 import util from '@/utils/util.js'
 import appTopbar from './layout/topbar.vue'
 import AppPageSetting from './layout/pageSetting.vue'
 
 import pageOption from '@/config/prebuild.config.js'
+import baseData from '@d' // 数据源
 
+let projectDataVal = null,
+  pageDataVal = null
 const pageConfig = ref(util.copyObj(pageOption))
 // 不同的页面，这个settings需要不同
-const settings = ref([
-  {
-    type: 'base-text',
-    label: '页面描述',
-    attr: 'desc',
-    placeholder: '例：双十一专题主页',
-    val: '',
-    isNecessary: true,
-  },
-])
+const settings = ref([])
+const router = useRouter()
+const routeData = router.currentRoute
 let handShake = null
+
+function setLocalPageData() {
+  // routeData.params.id routeData.params.pageId
+  projectDataVal = baseData.find(
+    (item) => item.id === Number(routeData.params.id)
+  )
+  pageDataVal = projectDataVal.pages.find(
+    (item) => item.pageId === Number(routeData.params.pageId)
+  )
+  pageConfig.value = setPrePageOption(pageDataVal?.pageConfig, pageConfig.value)
+  settings.value = pageDataVal.prePageData.settings
+}
+
+function setPrePageOption(config, formData) {
+  if (config) {
+    return setPageOptionData(config, formData)
+  } else {
+    return setPageOptionData(
+      {
+        base: {
+          name: pageDataVal.prePageData.name,
+          router: `/pre/${pageDataVal.prePageData.router}`,
+          position: `/src/prePages/${pageDataVal.prePageData.name}/index.vue`,
+        },
+      },
+      formData
+    )
+  }
+}
 
 function savePageSet() {
   console.log('save')
@@ -71,6 +97,10 @@ function syncPreview() {
   })
 }
 onMounted(() => {
+  setLocalPageData()
+})
+
+onMounted(() => {
   handShake = new Postmate({
     container: document.getElementById('preIframe'),
     url: 'http://localhost:3000/preview.html',
@@ -78,11 +108,12 @@ onMounted(() => {
     classListArray: ['iframe-dom'],
   })
   handShake.then((child) => {
+    const pageData = getPageOptionData(pageConfig.value)
     child.call(
       'getData',
       JSON.stringify({
-        path: '/login',
-        title: 'example',
+        path: `/${pageData.router}`,
+        title: pageData.name,
         content: getSettingData(),
       })
     )

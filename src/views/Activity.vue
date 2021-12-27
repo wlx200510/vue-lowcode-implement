@@ -1,6 +1,36 @@
 <template>
   <div class="activity-con">
-    <el-button type="primary" @click="onButtonClick">创建活动</el-button>
+    <el-dialog title="新建项目" :visible.sync="projectFormVisible">
+      <el-form :model="form">
+        <el-form-item label="项目名称:" :label-width="formLabelWidth">
+          <el-input v-model="form.projectName" autocomplete="off"></el-input>
+        </el-form-item>
+        <el-form-item label="页面类型" :label-width="formLabelWidth">
+          <el-select v-model="form.projectType" placeholder="请选择页面类型">
+            <el-option
+              v-for="item in Object.keys(activityType)"
+              :label="activityType[item]"
+              :value="item"
+              :key="item"
+            ></el-option>
+          </el-select>
+        </el-form-item>
+        <el-form-item label="项目描述:" :label-width="formLabelWidth">
+          <el-input
+            v-model="form.projectDesc"
+            type="textarea"
+            :rows="2"
+            placeholder="请输入项目描述"
+            autocomplete="off"
+          ></el-input>
+        </el-form-item>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="projectFormVisible = false">取 消</el-button>
+        <el-button type="primary" @click="createProject">确 定</el-button>
+      </div>
+    </el-dialog>
+    <el-button type="primary" @click="onButtonClick">创建项目</el-button>
     <el-table :data="ActivityData" style="width: 100%">
       <el-table-column label="日期" width="180">
         <template slot-scope="scope">
@@ -9,20 +39,20 @@
         </template>
       </el-table-column>
       <el-table-column
-        prop="name"
-        label="活动名称"
+        prop="projectName"
+        label="项目名称"
         width="180"
       ></el-table-column>
-      <el-table-column prop="type" label="活动类型">
+      <el-table-column prop="type" label="项目类型">
         <template slot-scope="scope">
-          {{ activityType[scope.row.type] }}
+          {{ activityType[scope.row.projectType] }}
         </template>
       </el-table-column>
-      <el-table-column
-        prop="includePages"
-        label="包含页面数"
-        width="180"
-      ></el-table-column>
+      <el-table-column label="包含页面数" width="180">
+        <template slot-scope="scope">
+          {{ scope.row.pages.length }}
+        </template>
+      </el-table-column>
       <el-table-column label="操作" align="center">
         <template slot-scope="scope">
           <el-button size="mini" @click="handleEdit(scope.$index, scope.row)"
@@ -46,7 +76,7 @@
       :page-sizes="[10, 20, 50, 100]"
       :page-size="10"
       layout="total, sizes, prev, pager, next, jumper"
-      :total="20"
+      :total="baseData.length"
     ></el-pagination>
   </div>
 </template>
@@ -60,39 +90,20 @@ import {
 } from '@vue/composition-api'
 import { useRouter } from 'vue2-helpers/vue-router'
 import { activityType } from '@/const/pageDict'
+import baseData from '@d'
+
+const formLabelWidth = '80px'
 const router = useRouter()
 const { $confirm, $message } = getCurrentInstance().proxy
-const ActivityData = ref([
-  {
-    createDate: '2021-11-01',
-    id: 1,
-    name: '赠送课时1',
-    type: 'Recommend',
-    includePages: 3,
-  },
-  {
-    createDate: '2021-11-03',
-    id: 2,
-    name: '分销官招募',
-    type: 'Distribution',
-    includePages: 2,
-  },
-  {
-    createDate: '2021-12-01',
-    id: 3,
-    name: '裂变',
-    type: 'Exceed',
-    includePages: 3,
-  },
-  {
-    createDate: '2021-12-31',
-    id: 4,
-    name: '赠送课时2',
-    type: 'Recommend',
-    includePages: 4,
-  },
-])
+const ActivityData = ref(baseData)
 const currentPage = ref(1)
+const projectFormVisible = ref(false)
+const form = reactive({
+  id: null,
+  projectName: '',
+  projectType: null,
+  projectDesc: '',
+})
 function handleCurrentChange(e) {
   console.log(e)
 }
@@ -100,16 +111,33 @@ function handleSizeChange(e) {
   console.log(e)
 }
 function onButtonClick() {
-  // 创建活动流程
+  // 创建项目流程
+  // 需要输入项目名称，选择项目类型，项目描述选填。
+  projectFormVisible.value = true
+}
+function createProject() {
+  // 点击保存后生成初始化的json文件和id保存在dataBase中
+  const curMaxId = baseData[baseData.length - 1].id
+  const saveJsonData = {
+    ...form,
+    id: curMaxId + 1,
+    createDate: `${new Date().getFullYear()}-${
+      new Date().getMonth() + 1
+    }-${new Date().getDate()}`,
+    pages: [],
+  }
+  console.log(JSON.stringify(saveJsonData))
+  ActivityData.value.push(saveJsonData)
+  projectFormVisible.value = false
 }
 function handleEdit(index, row) {
   console.log(row)
-  router.push(`/Page/${row.id}?type=${row.type}`)
-  // 编辑活动
+  router.push(`/Page/${row.id}?type=${row.projectType}`)
+  // 编辑项目
 }
 function handleDelete(index, row) {
   console.log(index, row)
-  $confirm('此操作将永久删除该活动页面, 是否继续?', '提示', {
+  $confirm('此操作将永久删除该项目页面, 是否继续?', '提示', {
     confirmButtonText: '确定',
     cancelButtonText: '取消',
     type: 'warning',

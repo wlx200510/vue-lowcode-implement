@@ -76,21 +76,6 @@
             </div>
           </template>
         </div>
-
-        <!--底部导航控件-->
-        <!-- <div
-          v-if="bottomMenu"
-          :class="['absolute-tpl', bottomMenu.active ? 'current' : '']"
-          @click="clickBtmMenu"
-        >
-          <bottom-menu :component="bottomMenu"></bottom-menu>
-          <div class="comp-menu">
-            <a href="javascript:void(0)" @click="delBtmMenu">
-              <span class="tips">删除</span>
-              <i class="fa fa-trash"></i>
-            </a>
-          </div>
-        </div> -->
       </div>
     </div>
 
@@ -120,6 +105,7 @@ import {
   watchEffect,
   onMounted,
 } from '@vue/composition-api'
+import { useRouter } from 'vue2-helpers/vue-router'
 import util from '@/utils/util.js'
 import {
   line2Hump,
@@ -138,6 +124,7 @@ import previewDialog from '@/components/preview.vue'
 import pageOption from '@/config/page.config.js'
 // 组件默认配置
 import compConfig from '@/config/comp.config.js'
+import baseData from '@d' // 数据源
 
 const { $bus, $confirm, $message } = getCurrentInstance().proxy
 const clickShow = ref(false),
@@ -146,27 +133,15 @@ const clickShow = ref(false),
   bottomMenu = ref(null),
   currentIndex = ref(-1),
   currentConfig = ref(null)
+const router = useRouter()
+const routeData = router.currentRoute
+let projectDataVal = null,
+  pageDataVal = null
 
 let pageConfig = ref(util.copyObj(pageOption))
 let click = reactive({
   index: 0,
   tabs: [],
-})
-
-watchEffect(() => {
-  if (compList.value && compList.value.length > 1) {
-    // 这个数据结构考虑增加页面路由/名称/页面配置config信息，还有是否是预制页面
-    // 后续用这个来还原C端页面
-    localStorage.setItem(
-      'GLOBAL_PAGE_DATA_SET',
-      JSON.stringify({
-        time: Date.now(),
-        config: compList.value,
-        pageConfig: getPageOptionData(pageConfig.value),
-        pageType: 0,
-      })
-    )
-  }
 })
 
 const hasFixedComp = computed(() => compList.value.some((item) => item.fixed))
@@ -345,14 +320,15 @@ function showPageSet() {
   currentConfig.value = null
 }
 function savePageSet() {
-  console.warn(
-    'save Info: ',
-    JSON.stringify({
-      config: compList.value,
-      pageConfig: getPageOptionData(pageConfig.value),
-      pageType: 0,
-    })
+  const pageIndex = projectDataVal.pages.findIndex(
+    (item) => item.pageId === pageDataVal.pageId
   )
+  projectDataVal.pages[pageIndex] = {
+    ...projectDataVal.pages[pageIndex],
+    config: compList.value,
+    pageConfig: getPageOptionData(pageConfig.value),
+  }
+  console.warn('save Info: ', JSON.stringify(projectDataVal))
   $message({
     message: '打开chomre devtool查看保存的信息！',
     type: 'success',
@@ -366,6 +342,7 @@ function showPreview() {
       config: compList.value,
       pageConfig: getPageOptionData(pageConfig.value),
       pageType: 0,
+      pageId: pageDataVal.pageId,
     })
   )
   previewShow.value = true
@@ -376,6 +353,24 @@ function resetCompUnchecked() {
       val.active = false
     }
   })
+}
+function setLocalPageData() {
+  // routeData.params.id routeData.params.pageId
+  projectDataVal = baseData.find(
+    (item) => item.id === Number(routeData.params.id)
+  )
+  pageDataVal = projectDataVal.pages.find(
+    (item) => item.pageId === Number(routeData.params.pageId)
+  )
+  if (pageDataVal?.config) {
+    compList.value = pageDataVal.config
+  }
+  if (pageDataVal?.pageConfig) {
+    pageConfig.value = setPageOptionData(
+      pageDataVal.pageConfig,
+      pageConfig.value
+    )
+  }
 }
 function readLocalData() {
   const tmp = localStorage.getItem('GLOBAL_PAGE_DATA_SET')
@@ -408,7 +403,7 @@ function readLocalData() {
   }
 }
 onMounted(() => {
-  readLocalData()
+  setLocalPageData()
   showPageSet()
 })
 </script>

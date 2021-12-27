@@ -1,9 +1,13 @@
 <template>
   <div class="page-con">
-    <div class="btn-con">
+    <div class="btn-con" v-if="projectData">
       <el-button type="primary" icon="el-icon-plus" @click="addPage"
         >增加页面</el-button
       >
+      <div class="source" v-if="projectData.projectDesc">
+        <span>项目备注：</span>
+        <p>{{ projectData.projectDesc }}</p>
+      </div>
       <div class="source">
         <span>项目支持的功能：</span>
         <el-tag
@@ -30,10 +34,10 @@
           <div style="padding: 14px">
             <div class="space-between">
               <div>
-                <span>{{ o.name }}</span>
+                <span>{{ o.showPageName }}</span>
                 <div class="bottom clearfix">
                   <time class="time">{{
-                    o.type === 1 ? '搭建页面' : '预制页面'
+                    o.pageType === 0 ? '搭建页面' : '预制页面'
                   }}</time>
                 </div>
               </div>
@@ -50,61 +54,86 @@
       :visible.sync="dialogFormVisible"
     >
       <el-form :model="form">
-        <el-form-item label="页面名称:" :label-width="formLabelWidth">
-          <el-input v-model="form.name" autocomplete="off"></el-input>
+        <el-form-item label="展示名称:" :label-width="formLabelWidth">
+          <el-input v-model="form.showPageName" autocomplete="off"></el-input>
         </el-form-item>
-        <el-form-item label="访问路径:" :label-width="formLabelWidth">
-          <el-input v-model="form.path" autocomplete="off"></el-input>
+        <el-form-item label="页面类型:" :label-width="formLabelWidth">
+          <el-radio-group v-model="form.pageType">
+            <el-radio :label="0">搭建页面</el-radio>
+            <el-radio :label="1">预制页面</el-radio>
+          </el-radio-group>
         </el-form-item>
-        <el-form-item label="页面类型" :label-width="formLabelWidth">
-          <el-select v-model="form.type" placeholder="请选择页面类型">
-            <el-option label="搭建页面" :value="1"></el-option>
-            <el-option label="预制页面" :value="2"></el-option>
+        <el-form-item
+          v-if="form.pageType === 1"
+          label="预制页面:"
+          :label-width="formLabelWidth"
+        >
+          <el-select v-model="form.prePageData" placeholder="请选择预制页面">
+            <el-option
+              v-for="choice in prePageArr"
+              :label="choice.name"
+              :value="choice"
+              :key="choice.folderKey"
+            ></el-option>
           </el-select>
         </el-form-item>
-        <Upload
-          label="缩略图"
-          :item="form.thumbnail"
-          @uploadSuccess="trigger"
-        />
+        <div style="margin-left: 16px">
+          <Upload
+            label="缩略图"
+            :item="form.thumbnail"
+            @uploadSuccess="trigger"
+          />
+        </div>
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click="dialogFormVisible = false">取 消</el-button>
-        <el-button type="primary" @click="dialogFormVisible = false"
-          >确 定</el-button
-        >
+        <el-button type="primary" @click="savePage">确 定</el-button>
       </div>
     </el-dialog>
   </div>
 </template>
 
 <script setup>
+// @todo: 如果是预制页面，则需要从所有预制页面中选择对应的选项
 import { reactive, ref, onBeforeMount, computed } from '@vue/composition-api'
 import { useRouter } from 'vue2-helpers/vue-router'
 
 import Upload from '@/components/common/upload.vue'
 import { activityPlugins } from '@/const/pageDict'
 import menuConfig from '@/config/menu.config'
-console.log(menuConfig)
-const formLabelWidth = '80px'
+import prePageArr from '@/prePages'
+import baseData from '@d'
+
+const formLabelWidth = '100px'
 const router = useRouter()
 const routeData = router.currentRoute
+const projectData = ref(null)
 const pageData = ref([])
 const dialogFormVisible = ref(false)
-const form = reactive({
-  name: '',
-  path: '',
-  type: '',
+let form = ref({
+  showPageName: '',
+  pageType: '',
   thumbnail: {
     width: '',
     height: '',
     val: '',
   },
+  prePageData: null,
 })
 const plugins = computed(() => activityPlugins[routeData.query.type])
 
 function addPage() {
   // 通过对话框新建页面配置
+  form.value = {
+    showPageName: '',
+    pageType: '',
+    thumbnail: {
+      width: '',
+      height: '',
+      val: '',
+    },
+    prePageData: null,
+  }
   dialogFormVisible.value = true
 }
 
@@ -113,55 +142,41 @@ function trigger(data) {
 }
 
 function modifyPage(page) {
-  if (page.type === 1) {
-    router.push(`/Editor/${page.pageId}`)
+  if (page.pageType === 0) {
+    router.push(`/Editor/${projectData.value.id}/${page.pageId}`)
   } else {
-    router.push(`/PreBuild/${page.pageId}`)
+    router.push(`/PreBuild/${projectData.value.id}/${page.pageId}`)
   }
 }
 
 function editPage(page) {
-  this.form = reactive(page)
+  form.value = page
   dialogFormVisible.value = true
+}
+function savePage() {
+  if (form.value.pageId) {
+    const curEditPage = pageData.value.find(
+      (item) => item.pageId === form.pageId
+    )
+    Object.assign(curEditPage, { ...form.value })
+  } else {
+    pageData.value.push({
+      ...form.value,
+      pageId: pageData.value[pageData.value.length - 1].pageId + 1,
+      config: form.pageType === 0 ? [] : null,
+      pageConfig: null,
+    })
+  }
+  console.log(JSON.stringify(pageData.value))
+  dialogFormVisible.value = false
 }
 
 onBeforeMount(() => {
   // 根据routeData.params.id来请求接口，获取此id下的所有页面
-  pageData.value = [
-    {
-      pageId: 299,
-      name: '首页',
-      type: 1,
-      path: '/',
-      thumbnail: {
-        width: 235,
-        height: 236,
-        val: 'https://shadow.elemecdn.com/app/element/hamburger.9cf7b091-55e9-11e9-a976-7f4d0b07eef6.png',
-      },
-    },
-    {
-      pageId: 110,
-      name: '详情页',
-      type: 1,
-      path: '/detail',
-      thumbnail: {
-        width: 235,
-        height: 236,
-        val: 'https://shadow.elemecdn.com/app/element/hamburger.9cf7b091-55e9-11e9-a976-7f4d0b07eef6.png',
-      },
-    },
-    {
-      pageId: 211,
-      name: '登录页',
-      type: 2,
-      path: '/login',
-      thumbnail: {
-        width: 235,
-        height: 236,
-        val: 'https://shadow.elemecdn.com/app/element/hamburger.9cf7b091-55e9-11e9-a976-7f4d0b07eef6.png',
-      },
-    },
-  ]
+  projectData.value = baseData.find(
+    (item) => item.id === Number(routeData.params.id)
+  )
+  pageData.value = projectData.value.pages
 })
 </script>
 
