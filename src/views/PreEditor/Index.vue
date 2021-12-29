@@ -28,6 +28,7 @@ import AppPageSetting from './layout/pageSetting.vue'
 import pageOption from '@/config/prebuild.config.js'
 import baseData from '@d' // 数据源
 
+const { $message } = getCurrentInstance().proxy
 let projectDataVal = null,
   pageDataVal = null
 const pageConfig = ref(util.copyObj(pageOption))
@@ -58,7 +59,7 @@ function setPrePageOption(config, formData) {
         base: {
           name: pageDataVal.prePageData.name,
           router: `/pre/${pageDataVal.prePageData.router}`,
-          position: `/src/prePages/${pageDataVal.prePageData.name}/index.vue`,
+          position: `/src/prePages/${pageDataVal.prePageData.router}/index.vue`,
         },
       },
       formData
@@ -67,16 +68,18 @@ function setPrePageOption(config, formData) {
 }
 
 function savePageSet() {
-  console.log('save')
-  localStorage.setItem(
-    'GLOBAL_PRE_PAGE_DATA_SET',
+  console.warn(
+    'save Info: ',
     JSON.stringify({
-      time: Date.now(),
-      pageType: 1,
+      ...pageDataVal,
       config: getSettingData(),
       pageConfig: getPageOptionData(pageConfig.value),
     })
   )
+  $message({
+    message: '打开chomre devtool查看保存的信息！',
+    type: 'success',
+  })
 }
 function getSettingData() {
   return settings.value.reduce((origin, item) => {

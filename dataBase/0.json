@@ -280,8 +280,22 @@
           }
         ]
       },
-      "config": null,
-      "pageConfig": null
+      "config": {
+        "desc": "测试页面内容文字123",
+        "color": "#F90C0C"
+      },
+      "pageConfig": {
+        "base": {
+          "name": "记录页面",
+          "router": "/pre/record",
+          "position": "/src/prePages/record/index.vue"
+        },
+        "style": {
+          "background-color": "#E6D415",
+          "background-image": "",
+          "background-repeat": "no-repeat"
+        }
+      }
     }
   ]
 }

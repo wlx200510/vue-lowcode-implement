@@ -2,6 +2,7 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import path from 'path'
 import { firstLetterUpper } from '@/utils/tool'
+import buildView from './buildView.vue'
 
 Vue.use(Router)
 const context = require.context(`../src/prePages`, true, /index.vue$/)
@@ -13,6 +14,11 @@ const routes = context.keys().map((key) => {
     component: compData,
     name: firstLetterUpper(pathName),
   }
+})
+routes.push({
+  path: '/',
+  component: buildView,
+  name: 'Build',
 })
 
 const router = new Router({

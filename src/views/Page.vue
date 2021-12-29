@@ -100,7 +100,6 @@ import { useRouter } from 'vue2-helpers/vue-router'
 
 import Upload from '@/components/common/upload.vue'
 import { activityPlugins } from '@/const/pageDict'
-import menuConfig from '@/config/menu.config'
 import prePageArr from '@/prePages'
 import baseData from '@d'
 
