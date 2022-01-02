@@ -1,9 +1,5 @@
 <template>
-  <router-view
-    v-if="isPre && pageConfig"
-    :pageConfig="pageConfig.content"
-  ></router-view>
-  <router-view v-else></router-view>
+  <router-view :pageData="data"></router-view>
 </template>
 
 <script lang="js">
@@ -12,24 +8,26 @@ export default {
   name: 'Child',
   data(){
     return {
-      pageConfig: null,
-      handShake: null,
-      isPre: false
+      data: null,
+      handShake: null
     }
   },
   created() {
     this.handShake = new Postmate.Model({
       getData: (data) => {
-        this.pageConfig = JSON.parse(data)
-        this.isPre = true
+        this.data = JSON.parse(data)
       }
     })
   },
   watch: {
-    'pageConfig.pageConfig': function(newVal) {
-      const { base } = newVal
-      const pathRoute = base.router ? `/pre${base.router}` : '/'
-      this.$router.replace(pathRoute)
+    'data': function(newVal) {
+      const { pageConfig, content } = newVal
+      const { base } = pageConfig
+      if (content) {
+        if(this.$route.path !== base.router) {
+          this.$router.replace(base.router)
+        }
+      }
     }
   }
 }

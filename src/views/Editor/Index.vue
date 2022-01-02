@@ -79,7 +79,12 @@
       </div>
     </div>
 
-    <previewDialog :show.sync="previewShow"></previewDialog>
+    <previewDialog
+      v-if="previewShow"
+      :pageConfig="pageConfig"
+      :comp="compList"
+      @close="previewShow = false"
+    ></previewDialog>
 
     <appOpt v-if="currentConfig" :option="currentConfig"></appOpt>
     <appPageOpt v-else :option="pageConfig"></appPageOpt>

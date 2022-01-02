@@ -1,8 +1,8 @@
 <!-- 组装页面的预览路由 -->
 <template>
-  <div class="comp-blocks">
+  <div class="comp-blocks" v-if="pageData">
     <component
-      v-for="comp in mockData"
+      v-for="comp in compList"
       :key="comp.domId"
       :is="comp.name"
       :component="comp"
@@ -14,6 +14,7 @@
 <script>
 export default {
   name: '',
+  props: ['pageData'],
   data() {
     return {
       mockData: [
@@ -233,8 +234,17 @@ export default {
     }
   },
 
-  computed: {},
-
+  computed: {
+    compList() {
+      if (!this.pageData) {
+        return []
+      }
+      return this.pageData.compList
+    },
+    pageConfig() {
+      return this.pageData?.pageConfig
+    },
+  },
   methods: {},
 }
 </script>

@@ -13,14 +13,13 @@
             >
               <i class="fa fa-window-close" @click.stop="delImg(item)"></i>
             </div>
-            <div v-else class="el-upload__text">
-              上传图片 或
-              <em
-                ><a href="javascript:;" @click.prevent="dialogShow = true"
-                  >图片地址</a
-                ></em
-              >
-            </div>
+            <template v-else>
+              <div class="el-upload__text">
+                上传图片 或
+                <em><span>图片地址</span></em>
+              </div>
+              <div class="single-btn" @click.stop="inputLink"></div>
+            </template>
           </div>
           <input
             @change="upload"
@@ -65,32 +64,6 @@
             </el-form-item>
           </el-form>
         </el-tab-pane>
-
-        <el-tab-pane label="本站图片素材" name="inside">
-          <el-table :data="tableData" style="width: 100%">
-            <el-table-column prop="name" label="预览" width="80">
-              <template>
-                <img
-                  style="max-width: 50px; max-height: 50px"
-                  src="http://www.w3school.com.cn/i/eg_tulip.jpg"
-                />
-              </template>
-            </el-table-column>
-            <el-table-column prop="date" label="上传日期" width="100">
-            </el-table-column>
-            <el-table-column prop="address" label="图片地址"> </el-table-column>
-            <el-table-column fixed="right" label="操作" width="60">
-              <template slot-scope="scope">
-                <el-button
-                  @click="handleClick(scope.row)"
-                  type="text"
-                  size="small"
-                  >选择</el-button
-                >
-              </template>
-            </el-table-column>
-          </el-table>
-        </el-tab-pane>
       </el-tabs>
 
       <div slot="footer" class="dialog-footer">
@@ -124,6 +97,11 @@ function clickTab(tab) {
 
 function delImg(item) {
   item.val = ''
+}
+
+function inputLink() {
+  imgUrl.value = ''
+  dialogShow.value = true
 }
 
 function getImageValid(Image) {
@@ -199,8 +177,8 @@ function setImgUrl() {
       if (invalide) {
         triggerUploadSucc(img)
       }
-      img.src = imgUrl.value
     }
+    img.src = imgUrl.value
   } catch (e) {
     console.warn(e)
     img.src = ''
@@ -310,5 +288,13 @@ export default {
   width: 150px;
   height: 115px;
   cursor: pointer;
+}
+.single-btn {
+  position: absolute;
+  width: 60px;
+  height: 28px;
+  right: 6px;
+  top: 85px;
+  z-index: 1;
 }
 </style>

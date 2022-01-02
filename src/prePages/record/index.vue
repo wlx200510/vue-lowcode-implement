@@ -1,8 +1,8 @@
 <!-- record -->
 <template>
   <div class="record">
-    <h2 :style="{ color: pageConfig.color }">奖品列表</h2>
-    <p>{{ pageConfig.desc }}</p>
+    <h2 :style="{ color: fontColor }">奖品列表</h2>
+    <p>{{ pageData.content.desc }}</p>
   </div>
 </template>
 
@@ -12,9 +12,13 @@ export default {
   data() {
     return {}
   },
-  props: ['pageConfig'],
+  props: ['pageData'],
 
-  computed: {},
+  computed: {
+    fontColor() {
+      return this.pageData.content.color
+    },
+  },
 
   methods: {},
 }

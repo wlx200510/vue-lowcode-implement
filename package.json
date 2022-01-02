@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev:a": "npm run dev && npm run dev:c",
+    "dev:a": "npm run dev & npm run dev:c",
     "dev": "vue-cli-service serve",
     "dev:c": "vue-cli-service serve --project c",
     "build": "vue-tsc --noEmit && vue-cli-service build",

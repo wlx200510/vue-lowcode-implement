@@ -115,8 +115,7 @@ onMounted(() => {
     child.call(
       'getData',
       JSON.stringify({
-        path: `/${pageData.router}`,
-        title: pageData.name,
+        pageConfig: pageData,
         content: getSettingData(),
       })
     )

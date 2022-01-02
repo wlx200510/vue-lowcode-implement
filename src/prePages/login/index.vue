@@ -2,7 +2,7 @@
 <template>
   <div class="login">
     <p>登录页面</p>
-    <p>{{ pageConfig.desc }}</p>
+    <p>{{ pageData.content.desc }}</p>
   </div>
 </template>
 
@@ -12,7 +12,7 @@ export default {
   data() {
     return {}
   },
-  props: ['pageConfig'],
+  props: ['pageData'],
 
   computed: {},
 

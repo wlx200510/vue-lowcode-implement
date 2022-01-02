@@ -4,8 +4,8 @@
     title="页面预览"
     :close-on-click-modal="false"
     :append-to-body="false"
-    :visible.sync="visible"
-    @close="emit('update:show', false)"
+    :visible="true"
+    @close="emit('close')"
     width="395px"
   >
     <el-row>
@@ -13,7 +13,7 @@
         :span="12"
         style="text-align: center; width: 375px; background-color: #f2f3f4"
       >
-        <iframe id="ifr-preview" :allowtransparency="true" src=""></iframe>
+        <div id="ifrPreview"></div>
 
         <div class="pre-desc">
           <h3 style="color: red">预览说明：</h3>
@@ -26,20 +26,38 @@
 </template>
 
 <script setup>
-import { ref, watch } from '@vue/composition-api'
+import { ref, watch, onMounted, getCurrentInstance } from '@vue/composition-api'
+import Postmate from 'postmate'
+let handShake = null
 const props = defineProps({
-  show: {
-    type: Boolean,
-    default: false,
+  pageConfig: {
+    type: Object,
+  },
+  comp: {
+    type: Array,
   },
 })
-const emit = defineEmits(['update:show'])
-const visible = ref(props.show)
-watch(props, (newVal) => {
-  if (newVal.show && document.getElementById('ifr-preview')) {
-    document.getElementById('ifr-preview').contentWindow.location.reload(true)
-  }
-  visible.value = newVal.show
+const emit = defineEmits(['close'])
+const { $nextTick } = getCurrentInstance().proxy
+
+onMounted(() => {
+  $nextTick(() => {
+    handShake = new Postmate({
+      container: document.getElementById('ifrPreview'),
+      url: 'http://localhost:3000/preview.html',
+      name: 'child-iframe',
+      classListArray: ['iframe-dom'],
+    })
+    handShake.then((child) => {
+      child.call(
+        'getData',
+        JSON.stringify({
+          pageConfig: props.pageConfig,
+          compList: props.comp,
+        })
+      )
+    })
+  })
 })
 </script>
 

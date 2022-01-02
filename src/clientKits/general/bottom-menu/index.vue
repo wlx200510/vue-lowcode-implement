@@ -10,7 +10,7 @@
         <div v-else class="image-placeholder"><i class="fa fa-adjust"></i></div>
       </div>
     </div>
-    <div class="bottom-menu" :style="getStyle">
+    <div class="bottom-menu" :style="getHolderStyle">
       <div
         class="menu-item"
         :style="{
@@ -49,6 +49,9 @@ export default {
         }
       })
       return ret.join(';')
+    },
+    getHolderStyle() {
+      return this.getStyle + `background: transparent;`
     },
   },
   watch: {
