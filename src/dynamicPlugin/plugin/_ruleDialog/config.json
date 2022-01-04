@@ -1,0 +1,6 @@
+{
+  "name": "ruleDialog",
+  "path": "plugin/_ruleDialog/index.js",
+  "desc": "规则弹窗",
+  "props": {}
+}

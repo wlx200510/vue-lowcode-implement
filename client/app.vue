@@ -106,6 +106,9 @@ export default {
   computed: {},
 
   methods: {},
+  mounted() {
+    this.$$plugins.copyText.active('123')
+  },
 }
 </script>
 <style lang="less" scoped></style>

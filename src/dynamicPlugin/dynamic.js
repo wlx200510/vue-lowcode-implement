@@ -5,19 +5,29 @@
  * @env
  * 每个默认导出的插件需要有以下两个方法
  * @@init
- * @@show
+ * @@active
  */
 class DynamicLoader {
   constructor(plugins = []) {
     this.$plugins = plugins
-    this.registerPlugins()
   }
 
-  registerPlugins() {
-    this.$plugins.forEach((item) => {
-      import('@/dynamicPlugin/' + item.path).then((data) => {
-        data.default.init(item.props)
-        item.main = data.default
+  loadPlugins(Vue) {
+    const pluginLength = this.$plugins.length
+    const origin = {}
+    return new Promise((resolve) => {
+      this.$plugins.forEach((item, index) => {
+        import('@/dynamicPlugin/' + item.path).then((data) => {
+          if (typeof data.default.init === 'function') {
+            data.default.init(Vue, item.props)
+          }
+          item.main = data.default
+          origin[item.name] = item.main
+          if (pluginLength === Object.keys(origin).length) {
+            Vue.prototype.$$plugins = origin
+            resolve()
+          }
+        })
       })
     })
   }
@@ -61,12 +71,12 @@ class DynamicLoader {
     }
   }
 
-  callPlugin(name) {
+  callPlugin(name, args) {
     const plugin = this.$plugins.find((item) => item.name === name)
     if (!plugin) {
       console.error('调用的插件未在系统注册')
     } else {
-      plugin.main.show()
+      plugin.main.active(args)
     }
   }
 }

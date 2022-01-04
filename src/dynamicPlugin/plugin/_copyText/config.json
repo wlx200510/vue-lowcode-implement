@@ -1,0 +1,6 @@
+{
+  "name": "copyText",
+  "path": "plugin/_copyText/index.js",
+  "desc": "复制文字",
+  "props": {}
+}

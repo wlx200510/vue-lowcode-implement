@@ -1,17 +1,35 @@
 <template>
   <div class="activity-con">
-    <el-dialog title="新建项目" :visible.sync="projectFormVisible">
+    <el-dialog
+      :title="form.id !== null ? '编辑项目' : '新建项目'"
+      :visible.sync="projectFormVisible"
+    >
       <el-form :model="form">
         <el-form-item label="项目名称:" :label-width="formLabelWidth">
           <el-input v-model="form.projectName" autocomplete="off"></el-input>
         </el-form-item>
-        <el-form-item label="页面类型" :label-width="formLabelWidth">
-          <el-select v-model="form.projectType" placeholder="请选择页面类型">
+        <el-form-item label="项目类型" :label-width="formLabelWidth">
+          <el-select v-model="form.projectType" placeholder="请选择项目类型">
             <el-option
               v-for="item in Object.keys(activityType)"
               :label="activityType[item]"
               :value="item"
               :key="item"
+            ></el-option>
+          </el-select>
+        </el-form-item>
+        <el-form-item label="插件方法" :label-width="formLabelWidth">
+          <el-select
+            v-model="form.projectPlugins"
+            filterable
+            multiple
+            placeholder="支持多选"
+          >
+            <el-option
+              v-for="item in pluginsData"
+              :key="item.name"
+              :value="item.name"
+              :label="item.desc"
             ></el-option>
           </el-select>
         </el-form-item>
@@ -27,7 +45,7 @@
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click="projectFormVisible = false">取 消</el-button>
-        <el-button type="primary" @click="createProject">确 定</el-button>
+        <el-button type="primary" @click="saveProject">确 定</el-button>
       </div>
     </el-dialog>
     <el-button type="primary" @click="onButtonClick">创建项目</el-button>
@@ -55,13 +73,20 @@
       </el-table-column>
       <el-table-column label="操作" align="center">
         <template slot-scope="scope">
-          <el-button size="mini" @click="handleEdit(scope.$index, scope.row)"
+          <el-button
+            size="mini"
+            @click.stop="handleEdit(scope.$index, scope.row)"
+            >查看</el-button
+          >
+          <el-button
+            size="mini"
+            @click.stop="handleRowModify(scope.$index, scope.row)"
             >编辑</el-button
           >
           <el-button
             size="mini"
             type="danger"
-            @click="handleDelete(scope.$index, scope.row)"
+            @click.stop="handleDelete(scope.$index, scope.row)"
             >删除</el-button
           >
         </template>
@@ -90,6 +115,7 @@ import {
 } from '@vue/composition-api'
 import { useRouter } from 'vue2-helpers/vue-router'
 import { activityType } from '@/const/pageDict'
+import plugins from '@/kitLoader/loader/plugin'
 import baseData from '@d'
 
 const formLabelWidth = '80px'
@@ -98,12 +124,15 @@ const { $confirm, $message } = getCurrentInstance().proxy
 const ActivityData = ref(baseData)
 const currentPage = ref(1)
 const projectFormVisible = ref(false)
+const pluginsData = ref(plugins())
 const form = reactive({
   id: null,
   projectName: '',
   projectType: null,
   projectDesc: '',
+  projectPlugins: [],
 })
+
 function handleCurrentChange(e) {
   console.log(e)
 }
@@ -115,20 +144,34 @@ function onButtonClick() {
   // 需要输入项目名称，选择项目类型，项目描述选填。
   projectFormVisible.value = true
 }
-function createProject() {
+function saveProject() {
   // 点击保存后生成初始化的json文件和id保存在dataBase中
-  const curMaxId = baseData[baseData.length - 1].id
+  const projectPlugins = pluginsData.value.filter((item) =>
+    form.projectPlugins.includes(item.name)
+  )
   const saveJsonData = {
     ...form,
-    id: curMaxId + 1,
+    projectPlugins,
     createDate: `${new Date().getFullYear()}-${
       new Date().getMonth() + 1
     }-${new Date().getDate()}`,
     pages: [],
   }
+  if (saveJsonData.id === null) {
+    const curMaxId = baseData[baseData.length - 1].id
+    saveJsonData.id = curMaxId + 1
+  }
   console.log(JSON.stringify(saveJsonData))
   ActivityData.value.push(saveJsonData)
   projectFormVisible.value = false
+}
+function handleRowModify(index, row) {
+  form.id = row.id
+  form.projectName = row.projectName
+  form.projectType = row.projectType
+  form.projectDesc = row.projectDesc
+  form.projectPlugins = row.projectPlugins.map((item) => item.name)
+  projectFormVisible.value = true
 }
 function handleEdit(index, row) {
   console.log(row)

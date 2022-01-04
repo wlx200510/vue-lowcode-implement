@@ -4,6 +4,20 @@
   "projectName": "赠送课时",
   "projectType": "Recommend",
   "projectDesc": "",
+  "projectPlugins": [
+    {
+      "name": "copyText",
+      "path": "plugin/_copyText/index.js",
+      "desc": "复制文字",
+      "props": {}
+    },
+    {
+      "name": "ruleDialog",
+      "path": "plugin/_ruleDialog/index.js",
+      "desc": "规则弹窗",
+      "props": {}
+    }
+  ],
   "pages": [
     {
       "pageId": 1,
