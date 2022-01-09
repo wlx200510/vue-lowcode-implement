@@ -4,5 +4,6 @@
   "text": "标题模块",
   "icon": "fa-header",
   "category": "pageModule",
+  "projectTypes": [],
   "condition": {}
 }

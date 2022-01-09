@@ -4,5 +4,6 @@
   "text": "滚动新闻",
   "icon": "fa-newspaper-o",
   "category": "animate",
+  "projectTypes": [],
   "condition": {}
 }

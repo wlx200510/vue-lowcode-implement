@@ -4,5 +4,6 @@
   "text": "FAQ模块",
   "icon": "fa-quora",
   "category": "pageModule",
+  "projectTypes": [],
   "condition": {}
 }

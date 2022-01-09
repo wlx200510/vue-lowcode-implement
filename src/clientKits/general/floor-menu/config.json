@@ -4,5 +4,6 @@
   "text": "楼层导航",
   "icon": "fa-list-ol",
   "category": "general",
+  "projectTypes": [],
   "condition": {}
 }

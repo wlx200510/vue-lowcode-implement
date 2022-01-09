@@ -32,11 +32,21 @@ const CATEGORY = [
 
 const configItems = configModulesFunc()
 
-let menuItems = []
-CATEGORY.forEach((item) => {
-  item.items =
-    configItems.filter((config) => config.category === item.key) || []
-  menuItems.push(item)
-})
+function getMenuItems(type) {
+  const canShowComp = configItems.filter((compConfig) => {
+    // 空数组则直接返回true，说明所有type都可以
+    if (compConfig.projectTypes?.length > 0) {
+      return compConfig.projectTypes.includes(type)
+    }
+    return true
+  })
+  let menuItems = []
+  CATEGORY.forEach((item) => {
+    item.items =
+      canShowComp.filter((config) => config.category === item.key) || []
+    menuItems.push(item)
+  })
+  return menuItems
+}
 
-export default menuItems
+export default getMenuItems

@@ -1,6 +1,6 @@
 <template>
   <div class="app-body">
-    <appSidebar></appSidebar>
+    <appSidebar :source="projectDataVal"></appSidebar>
     <div class="app-main">
       <appToolbar
         v-on:showPageSet="showPageSet"
@@ -51,7 +51,7 @@
                 <a
                   v-if="!comp.fixed"
                   href="javascript:void(0)"
-                  :class="[idx == compList.length - 1 ? 'disabled' : '']"
+                  :class="[canShowDown(idx) ? '' : 'disabled']"
                   @click="downComp(idx)"
                 >
                   <span class="tips">下移</span>
@@ -151,6 +151,20 @@ let click = reactive({
 
 const hasFixedComp = computed(() => compList.value.some((item) => item.fixed))
 
+function canShowDown(index) {
+  const totleCompListLength = compList.value.length
+  if (index === totleCompListLength - 1) {
+    return false
+  }
+  if (
+    index === totleCompListLength - 2 &&
+    compList.value[totleCompListLength - 1].fixed
+  ) {
+    return false
+  }
+  return true
+}
+
 function addComp(index, key) {
   const comp = util.copyObj(compConfig[key])
   const config = {
@@ -219,7 +233,7 @@ function upComp(idx) {
   currentConfig.value = compList.value[idx - 1]
 }
 function downComp(idx) {
-  if (idx === compList.value.length - 1) {
+  if (!canShowDown(idx)) {
     return false
   }
   // 复制当前控件
@@ -309,7 +323,7 @@ onMounted(() => {
     if (Array.isArray(tabs) && tabs.length) {
       click.tabs = tabs
     } else {
-      click.tabs = ['outside', 'page', 'tel']
+      click.tabs = ['outside', 'logic', 'page', 'tel']
     }
     clickShow.value = true
   })

@@ -100,7 +100,7 @@ import { useRouter } from 'vue2-helpers/vue-router'
 
 import Upload from '@/components/common/upload.vue'
 import { activityPlugins } from '@/const/pageDict'
-import prePageArr from '@/prePages'
+import getUseablePrePages from '@/prePages'
 import baseData from '@d'
 
 const formLabelWidth = '100px'
@@ -109,6 +109,7 @@ const routeData = router.currentRoute
 const projectData = ref(null)
 const pageData = ref([])
 const dialogFormVisible = ref(false)
+const prePageArr = ref([])
 let form = ref({
   showPageName: '',
   pageType: '',
@@ -176,6 +177,7 @@ onBeforeMount(() => {
     (item) => item.id === Number(routeData.params.id)
   )
   pageData.value = projectData.value.pages
+  prePageArr.value = getUseablePrePages(projectData.value.projectType)
 })
 </script>
 

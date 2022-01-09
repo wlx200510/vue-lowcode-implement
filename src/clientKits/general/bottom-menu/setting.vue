@@ -91,7 +91,6 @@ export default {
       this.menus.splice(idx, 1)
     },
     addItem() {
-      console.log(this.menus)
       if (this.menus.length < 5) {
         this.menus.push(util.copyObj(this.defaultConf.settings.config[0]))
       } else {

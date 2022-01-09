@@ -12,7 +12,7 @@
       <el-row>
         <el-col :span="12" style="text-align: center; width: 375px">
           <div class="area-container" v-if="areas.length" id="timesMap">
-            <img class="area-img" :src="img" />
+            <img class="area-img" :src="styleArr[1].val" />
             <div
               :class="['crop-box', currentTab === 'day' ? 'active' : '']"
               data-tab="day"
@@ -245,12 +245,14 @@
       </el-row>
 
       <div slot="footer" class="dialog-footer">
-        <el-button type="primary" @click="dialogShow = false">确 定</el-button>
+        <el-button type="primary" @click="timeoutClickShow = false"
+          >确 定</el-button
+        >
       </div>
     </el-dialog>
     <el-button
       icon="el-icon-plus"
-      :disabled="!style[1].val"
+      :disabled="!styleArr[1].val"
       round
       @click="timeoutClickShow = true"
       >时间项配置</el-button
@@ -263,16 +265,10 @@ import dragArea from '@/utils/dragarea.js'
 
 export default {
   props: {
-    img: {
-      type: String,
-    },
-    end: {
-      type: String,
-    },
-    times: {
+    config: {
       type: Array,
     },
-    style: {
+    styleArr: {
       type: Array,
     },
   },
@@ -311,14 +307,13 @@ export default {
           label: 'Extra Bold',
         },
       ],
-      areas: this.times,
+      areas: this.config,
       counts: this.countTime(),
     }
   },
   watch: {
     timeoutClickShow(isShow) {
       if (isShow) {
-        this.dialogShow = isShow
         this.$nextTick(() =>
           dragArea.init({
             container: 'timesMap',
@@ -398,9 +393,11 @@ export default {
         second: '00',
         all_second: '00',
       }
-      if (this.end) {
+      if (this.styleArr[0].val) {
         const time = new Date().getTime()
-        const sTime = new Date(this.end.replace(/-/g, '/')).getTime()
+        const sTime = new Date(
+          this.styleArr[0].val.replace(/-/g, '/')
+        ).getTime()
         const ms = sTime - time
         if (ms < 0) {
           return ret

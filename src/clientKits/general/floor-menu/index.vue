@@ -43,7 +43,7 @@ export default {
   },
   data() {
     return {
-      items: this.component.action.config,
+      items: this.component.settings.config,
       backgroundColor: this.component.style[0].val,
       fillColor: this.component.style[2].val,
     }
@@ -51,7 +51,7 @@ export default {
   watch: {
     component: {
       handler() {
-        this.items = this.component.action.config
+        this.items = this.component.settings.config
         this.backgroundColor = this.component.style[0].val
         this.fillColor = this.component.style[2].val
       },

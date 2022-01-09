@@ -4,5 +4,6 @@
   "text": "倒计时",
   "icon": "fa-hourglass-start",
   "category": "general",
+  "projectTypes": [],
   "condition": {}
 }

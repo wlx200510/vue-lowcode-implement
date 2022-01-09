@@ -695,6 +695,8 @@ module.exports = {
     action: {
       type: 'floor-menu-click',
       title: '导航项配置',
+    },
+    settings: {
       config: [
         {
           text: '默认项1',
@@ -746,7 +748,7 @@ module.exports = {
       ],
     },
   },
-  timeout: {
+  'time-out': {
     title: '倒计时',
     domId: '',
     domName: '',
@@ -772,6 +774,8 @@ module.exports = {
     action: {
       type: 'timeout-click',
       title: '倒计时配置',
+    },
+    settings: {
       config: [
         {
           show: true,
@@ -990,6 +994,8 @@ module.exports = {
     action: {
       type: 'grid-menu-click',
       title: '点击项配置',
+    },
+    settings: {
       config: [
         {
           val: '',

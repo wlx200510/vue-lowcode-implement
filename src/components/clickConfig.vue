@@ -25,6 +25,28 @@
       </el-tab-pane>
 
       <el-tab-pane
+        v-if="tabs.indexOf('logic') > -1"
+        label="页面功能"
+        name="logic"
+      >
+        <el-form label-width="120px" style="margin-top: 20px">
+          <el-form-item label="功能类型：">
+            <el-radio-group v-model="logicVal.type">
+              <el-radio label="Router">Hash路由跳转</el-radio>
+              <el-radio label="Store">Store方法</el-radio>
+              <el-radio label="Plugin">插件方法</el-radio>
+            </el-radio-group>
+          </el-form-item>
+          <el-form-item label="跳转Schema：">
+            <el-input
+              placeholder="请输入Schema内容，格式为: ${调用方法}?${params}"
+              v-model="logicVal.content"
+            ></el-input>
+          </el-form-item>
+        </el-form>
+      </el-tab-pane>
+
+      <el-tab-pane
         v-if="tabs.indexOf('code') > -1"
         label="自定义脚本"
         name="jsCode"
@@ -171,6 +193,10 @@ const dialogShow = ref(true),
   codeVal = ref(''),
   currentTab = ref(''),
   outsideVal = ref(null),
+  logicVal = ref({
+    type: '',
+    content: null,
+  }),
   pageVal = ref(null),
   telVal = ref('')
 let returnVal = null
@@ -212,6 +238,12 @@ function sure() {
     returnVal = {
       type: 'outside',
       href: outsideVal.value,
+    }
+  }
+  if (currentTab.value === 'logic' && logicVal.value) {
+    returnVal = {
+      type: 'logic',
+      href: `${logicVal.value.type}://${logicVal.value.content}`,
     }
   }
   if (currentTab.value === 'tel' && telVal.value) {

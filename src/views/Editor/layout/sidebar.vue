@@ -33,12 +33,13 @@
 
 <script lang="js">
 // 左侧菜单配置
-import menuConfig from '@/config/menu.config.js'
+import geMmenuConfig from '@/config/menu.config.js'
 export default {
   name: 'AppSide',
+  props: ['source'],
   data() {
     return {
-      menuData: menuConfig,
+      menuData: [],
     }
   },
   methods: {
@@ -46,6 +47,9 @@ export default {
       e.dataTransfer.setData('cmp-type', key)
     },
   },
+  created() {
+    this.menuData = geMmenuConfig(this.source?.projectType)
+  }
 }
 </script>
 

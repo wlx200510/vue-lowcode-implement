@@ -1,5 +1,6 @@
 export default {
   name: '登录页面',
+  projectTypes: [],
   settings: [
     {
       type: 'base-text',

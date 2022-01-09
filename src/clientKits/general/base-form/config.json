@@ -4,5 +4,6 @@
   "text": "表单",
   "icon": "fa-list",
   "category": "general",
+  "projectTypes": [],
   "condition": {}
 }

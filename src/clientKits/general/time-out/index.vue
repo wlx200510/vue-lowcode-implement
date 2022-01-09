@@ -8,16 +8,16 @@
         <i class="fa fa-hourglass-start"></i>
       </div>
       <div class="timeout-item day" :style="dayStyl">
-        {{ countTime('day', component.action.config[0]) }}
+        {{ countTime('day', component.settings.config[0]) }}
       </div>
       <div class="timeout-item hour" :style="hourStyl">
-        {{ countTime('hour', component.action.config[1]) }}
+        {{ countTime('hour', component.settings.config[1]) }}
       </div>
       <div class="timeout-item minute" :style="minuteStyl">
-        {{ countTime('minute', component.action.config[2]) }}
+        {{ countTime('minute', component.settings.config[2]) }}
       </div>
       <div class="timeout-item second" :style="secondStyl">
-        {{ countTime('second', component.action.config[3]) }}
+        {{ countTime('second', component.settings.config[3]) }}
       </div>
     </div>
   </div>
@@ -71,15 +71,15 @@ export default {
   methods: {
     getTimeStyle(idx) {
       const ret = []
-      if (this.component.action.config[idx].show) {
-        ret.push('left:' + this.component.action.config[idx].x + 'px')
-        ret.push('top:' + this.component.action.config[idx].y + 'px')
-        ret.push('width:' + this.component.action.config[idx].w + 'px')
-        ret.push('height:' + this.component.action.config[idx].h + 'px')
-        ret.push('line-height:' + this.component.action.config[idx].h + 'px')
-        ret.push('font-size:' + this.component.action.config[idx].font + 'px')
-        ret.push('font-weight:' + this.component.action.config[idx].weight)
-        ret.push('color:' + this.component.action.config[idx].color)
+      if (this.component.settings.config[idx].show) {
+        ret.push('left:' + this.component.settings.config[idx].x + 'px')
+        ret.push('top:' + this.component.settings.config[idx].y + 'px')
+        ret.push('width:' + this.component.settings.config[idx].w + 'px')
+        ret.push('height:' + this.component.settings.config[idx].h + 'px')
+        ret.push('line-height:' + this.component.settings.config[idx].h + 'px')
+        ret.push('font-size:' + this.component.settings.config[idx].font + 'px')
+        ret.push('font-weight:' + this.component.settings.config[idx].weight)
+        ret.push('color:' + this.component.settings.config[idx].color)
         return ret.join(';')
       } else {
         return 'display:none;'

@@ -1,5 +1,6 @@
 export default {
   name: '记录页面',
+  projectTypes: [],
   settings: [
     {
       type: 'base-text',

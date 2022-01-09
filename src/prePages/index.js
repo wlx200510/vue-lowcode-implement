@@ -23,10 +23,21 @@ const prePageArr = pages.map((item) => {
   )
   return {
     name: settingPage.name,
+    projectTypes: settingPage.projectTypes,
     settings: settingPage.settings,
     router: item.router,
     folderKey: item.folderKey,
   }
 })
 
-export default prePageArr
+function getUseablePrePages(typeName) {
+  return prePageArr.filter((item) => {
+    if (!item.projectTypes || item.projectTypes.length === 0) {
+      // 说明是公共可用的预制页面
+      return true
+    }
+    return item.projectTypes.includes(typeName)
+  })
+}
+
+export default getUseablePrePages

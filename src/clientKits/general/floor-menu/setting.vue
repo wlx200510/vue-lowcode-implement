@@ -52,16 +52,19 @@ export default {
   data() {
     return {
       defaultConf: util.copyObj(compConfig['floor-menu']),
-      items: this.menus,
+      items: this.config,
     }
   },
   props: {
-    menus: {
+    config: {
+      type: Array,
+    },
+    styleArr: {
       type: Array,
     },
   },
   watch: {
-    menus: {
+    config: {
       handler(val) {
         this.items = val
       },
@@ -87,7 +90,7 @@ export default {
     },
     addItem() {
       if (this.items.length < 18) {
-        this.items.push(util.copyObj(this.defaultConf.action.config[0]))
+        this.items.push(util.copyObj(this.defaultConf.settings.config[0]))
       } else {
         this.$alert('最多添加18个导航项！')
       }

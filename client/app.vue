@@ -108,6 +108,8 @@ export default {
   methods: {},
   mounted() {
     this.$$plugins.copyText.active('123')
+    this.$store.dispatch('getUserData')
+    this.$store.dispatch('init') // for Test
   },
 }
 </script>
