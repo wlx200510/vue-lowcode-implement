@@ -12,6 +12,7 @@
 </template>
 
 <script>
+import Utils from '@/utils/util'
 export default {
   name: 'BaseImage',
   props: {
@@ -47,14 +48,6 @@ export default {
     },
   },
   methods: {
-    clickParse() {
-      // 待补充的公共函数, 后续要放到utils里面
-      // 考虑三种click的触发，跟clickConfig一一对应
-      // 链接跳转
-      // 页面方法 包括store router plugin的解析
-      // 跳到页面某一个元素附近
-      // code的执行
-    },
     triggerClick(e) {
       const clickSettingData = this.component.settings.config[0]
       // 判断点击是否在配置的区域里面
@@ -66,7 +59,7 @@ export default {
           e.offsetY > clickSettingData.y &&
           e.offsetY < clickSettingData.y + clickSettingData.h
         if (isXClick && isYClick) {
-          this.clickParse(clickSettingData.click)
+          Utils.parseClickConfig(clickSettingData.click, this)
         }
       }
     },

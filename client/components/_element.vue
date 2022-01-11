@@ -41,6 +41,7 @@ export default {
       ref: 'asynckitnode',
       name: this.compName,
       props: { component: this.component },
+      id: this.component.domId,
       on: this.$listeners
     })
   }

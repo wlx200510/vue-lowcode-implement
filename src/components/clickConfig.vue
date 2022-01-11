@@ -49,15 +49,11 @@
       <el-tab-pane
         v-if="tabs.indexOf('code') > -1"
         label="自定义脚本"
-        name="jsCode"
+        name="code"
       >
         <el-form label-width="100px" style="margin-top: 20px">
           <el-form-item label="自定义脚本：">
-            <el-input
-              type="textarea"
-              placeholder="javascript代码，例：location.href='https://www.baidu.com'"
-              v-model="codeVal"
-            ></el-input>
+            <codemirror v-model="codeVal" :options="cmOptions" />
           </el-form-item>
         </el-form>
       </el-tab-pane>
@@ -150,18 +146,6 @@
           </el-tab-pane>
         </el-tabs>
       </el-tab-pane>
-
-      <el-tab-pane v-if="tabs.indexOf('tel') > -1" label="拨打电话" name="tel">
-        <el-form label-width="100px">
-          <el-form-item label="电话号码：">
-            <el-input
-              placeholder="请输入电话号码"
-              v-model="telVal"
-              :maxlength="11"
-            ></el-input>
-          </el-form-item>
-        </el-form>
-      </el-tab-pane>
     </el-tabs>
 
     <div slot="footer" class="dialog-footer">
@@ -173,6 +157,11 @@
 
 <script setup>
 import { ref, getCurrentInstance, watch, onMounted } from '@vue/composition-api'
+import { codemirror } from 'vue-codemirror'
+import 'codemirror/mode/javascript/javascript.js'
+import 'codemirror/lib/codemirror.css'
+import 'codemirror/theme/base16-dark.css'
+
 const props = defineProps({
   option: {
     type: Object,
@@ -198,7 +187,14 @@ const dialogShow = ref(true),
     content: null,
   }),
   pageVal = ref(null),
-  telVal = ref('')
+  telVal = ref(''),
+  cmOptions = ref({
+    tabSize: 2,
+    mode: 'text/javascript',
+    theme: 'base16-dark',
+    lineNumbers: true,
+    line: true,
+  })
 let returnVal = null
 
 function getCurrentTab() {
@@ -246,10 +242,10 @@ function sure() {
       href: `${logicVal.value.type}://${logicVal.value.content}`,
     }
   }
-  if (currentTab.value === 'tel' && telVal.value) {
+  if (currentTab.value === 'code' && codeVal.value) {
     returnVal = {
-      type: 'tel',
-      href: telVal.value,
+      type: 'code',
+      href: codeVal.value,
     }
   }
   $bus.$emit('click:submit', props.index, returnVal)
@@ -264,8 +260,11 @@ onMounted(() => {
       case 'page':
         pageVal.value = getVal('page')
         break
-      case 'tel':
-        telVal.value = getVal('tel')
+      case 'logic':
+        logicVal.value = getVal('logic')
+        break
+      case 'code':
+        codeVal.value = getVal('code')
         break
     }
   })

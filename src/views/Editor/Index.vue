@@ -323,7 +323,7 @@ onMounted(() => {
     if (Array.isArray(tabs) && tabs.length) {
       click.tabs = tabs
     } else {
-      click.tabs = ['outside', 'logic', 'page', 'tel']
+      click.tabs = ['outside', 'code', 'logic', 'page']
     }
     clickShow.value = true
   })

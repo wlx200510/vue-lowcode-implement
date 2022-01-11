@@ -6,6 +6,41 @@ const GET_GUID = (function* () {
     index += 1
   }
 })()
+
+function runLogicParse(str) {
+  const regE = /(\w+):\/\/([\w.]+)(\/[^?]+)(\?[^#]+)/
+  const queryE = /[^?^=^&]+=[^&]/g
+  const result = str.match(regE)
+  let protocol, selfHost, search, params
+  if (result !== null) {
+    protocol = result[1]
+    selfHost = result[2] + result[3]
+    search = result[4]
+    params = (function () {
+      var resultObj = {},
+        queryString = search.substring(1),
+        re = /([^&=]+)=([^&]*)/g,
+        m
+      while ((m = re.exec(queryString))) {
+        resultObj[decodeURIComponent(m[1])] = decodeURIComponent(m[2])
+      }
+      return resultObj
+    })()
+  }
+  //Router Store Plugin
+  if (protocol === 'Store') {
+    this.$store.dispatch(selfHost, params)
+  }
+  if (protocol === 'Router') {
+    this.$router.push({
+      path: '/' + selfHost,
+      query: params,
+    })
+  }
+  if (protocol === 'Plugin') {
+    this.$$plugins[selfHost].active(params)
+  }
+}
 export default {
   createGUID(prefix = '') {
     const TIME_STAMP = Date.now()
@@ -57,5 +92,20 @@ export default {
       return value || 0
     })
     return time_str
+  },
+  parseClickConfig(clickConfig, context) {
+    switch (clickConfig.type) {
+      case 'outside':
+        location.href = clickConfig.href
+        break
+      case 'logic':
+        runLogicParse.call(context, clickConfig.href)
+        break
+      case 'page':
+        document.querySelector('#' + clickConfig.href)?.scrollIntoView()
+        break
+      case 'code':
+        eval.call(context, clickConfig.href)
+    }
   },
 }
