@@ -31,7 +31,7 @@
       >
         <el-form label-width="120px" style="margin-top: 20px">
           <el-form-item label="功能类型：">
-            <el-radio-group v-model="logicVal.type">
+            <el-radio-group v-model="logicType">
               <el-radio label="Router">Hash路由跳转</el-radio>
               <el-radio label="Store">Store方法</el-radio>
               <el-radio label="Plugin">插件方法</el-radio>
@@ -40,7 +40,7 @@
           <el-form-item label="跳转Schema：">
             <el-input
               placeholder="请输入Schema内容，格式为: ${调用方法}?${params}"
-              v-model="logicVal.content"
+              v-model="logicContent"
             ></el-input>
           </el-form-item>
         </el-form>
@@ -182,12 +182,9 @@ const dialogShow = ref(true),
   codeVal = ref(''),
   currentTab = ref(''),
   outsideVal = ref(null),
-  logicVal = ref({
-    type: '',
-    content: null,
-  }),
+  logicType = ref(''),
+  logicContent = ref(null),
   pageVal = ref(null),
-  telVal = ref(''),
   cmOptions = ref({
     tabSize: 2,
     mode: 'text/javascript',
@@ -236,10 +233,10 @@ function sure() {
       href: outsideVal.value,
     }
   }
-  if (currentTab.value === 'logic' && logicVal.value) {
+  if (currentTab.value === 'logic' && logicType) {
     returnVal = {
       type: 'logic',
-      href: `${logicVal.value.type}://${logicVal.value.content}`,
+      href: `${logicType.value}://${logicContent.value}`,
     }
   }
   if (currentTab.value === 'code' && codeVal.value) {
@@ -261,7 +258,7 @@ onMounted(() => {
         pageVal.value = getVal('page')
         break
       case 'logic':
-        logicVal.value = getVal('logic')
+        ;[logicType.value, logicContent.value] = getVal('logic').split('://')
         break
       case 'code':
         codeVal.value = getVal('code')

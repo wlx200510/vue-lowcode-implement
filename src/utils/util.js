@@ -8,8 +8,7 @@ const GET_GUID = (function* () {
 })()
 
 function runLogicParse(str) {
-  const regE = /(\w+):\/\/([\w.]+)(\/[^?]+)(\?[^#]+)/
-  const queryE = /[^?^=^&]+=[^&]/g
+  const regE = /(\w+):\/\/([\w.]+)(\/[^?]+)?(\?[^#]+)?/i
   const result = str.match(regE)
   let protocol, selfHost, search, params
   if (result !== null) {
@@ -17,14 +16,17 @@ function runLogicParse(str) {
     selfHost = result[2] + result[3]
     search = result[4]
     params = (function () {
-      var resultObj = {},
-        queryString = search.substring(1),
-        re = /([^&=]+)=([^&]*)/g,
-        m
-      while ((m = re.exec(queryString))) {
-        resultObj[decodeURIComponent(m[1])] = decodeURIComponent(m[2])
+      if (search) {
+        var resultObj = {},
+          queryString = search.substring(1),
+          re = /([^&=]+)=([^&]*)/g,
+          m
+        while ((m = re.exec(queryString))) {
+          resultObj[decodeURIComponent(m[1])] = decodeURIComponent(m[2])
+        }
+        return resultObj
       }
-      return resultObj
+      return {}
     })()
   }
   //Router Store Plugin
@@ -105,7 +107,7 @@ export default {
         document.querySelector('#' + clickConfig.href)?.scrollIntoView()
         break
       case 'code':
-        eval.call(context, clickConfig.href)
+        break
     }
   },
 }

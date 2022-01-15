@@ -4,7 +4,12 @@
     :style="getStyle"
   >
     <ul class="grid-menu">
-      <li class="grid-menu-item" :style="getItemStyle" v-for="item in items">
+      <li
+        class="grid-menu-item"
+        :style="getItemStyle"
+        v-for="item in items"
+        @click="triggerClick(item)"
+      >
         <img v-if="item.val" :src="item.val" />
         <div v-else class="image-placeholder"><i class="fa fa-image"></i></div>
         <span v-if="item.text">{{ item.text }}</span>
@@ -14,11 +19,16 @@
 </template>
 
 <script>
+import Utils from '@/utils/util'
 export default {
   name: 'GridMenu',
   props: {
     component: {
       type: Object,
+    },
+    preview: {
+      type: Boolean,
+      default: false,
     },
   },
   data() {
@@ -50,7 +60,18 @@ export default {
       deep: true,
     },
   },
-  methods: {},
+  methods: {
+    triggerClick(item) {
+      console.log(item)
+      if (!this.preview) {
+        if (item.click.type === 'code') {
+          eval(item.click.href)
+        } else {
+          Utils.parseClickConfig(item.click, this)
+        }
+      }
+    },
+  },
 }
 </script>
 

@@ -21,9 +21,9 @@ export default {
   },
   watch: {
     'data': function(newVal) {
-      const { pageConfig, content } = newVal
+      const { pageConfig, config } = newVal
       const { base } = pageConfig
-      if (content) {
+      if (config) {
         if(this.$route.path !== base.router) {
           this.$router.replace(base.router)
         }

@@ -2,7 +2,7 @@
 <template>
   <div class="record">
     <h2 :style="{ color: fontColor }">奖品列表</h2>
-    <p>{{ pageData.content.desc }}</p>
+    <p>{{ pageData.config.desc }}</p>
   </div>
 </template>
 
@@ -16,7 +16,7 @@ export default {
 
   computed: {
     fontColor() {
-      return this.pageData.content.color
+      return this.pageData.config.color
     },
   },
 

@@ -101,5 +101,18 @@
 
 从维护和持续迭代角度，建议先按照第一种方案来做
 
+### C端动态展现的页面开发
+- 数据源来源：dataBase/0.json
+- 所需要实现的功能
+  1. 两种类型的页面解析
+  2. 插件信息的解析的加载
+  3. store信息的解析和加载
+  4. 确定公共的store功能 ———— 打点
+目录划分：
+  - store
+  - views
+  - components: 如toast/确认弹窗等业务无关的组件
+  - bootstrap
+
 ### Customize configuration
 See [Configuration Reference](https://cli.vuejs.org/config/).

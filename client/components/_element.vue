@@ -40,7 +40,7 @@ export default {
     return h(this.currentAsyncComp, {
       ref: 'asynckitnode',
       name: this.compName,
-      props: { component: this.component },
+      props: { component: this.component, preview: false },
       id: this.component.domId,
       on: this.$listeners
     })

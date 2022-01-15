@@ -2,7 +2,7 @@
 <template>
   <div class="login">
     <p>登录页面</p>
-    <p>{{ pageData.content.desc }}</p>
+    <p>{{ pageData.config.desc }}</p>
   </div>
 </template>
 

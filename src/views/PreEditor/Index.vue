@@ -94,7 +94,7 @@ function syncPreview() {
       'getData',
       JSON.stringify({
         pageConfig: getPageOptionData(pageConfig.value),
-        content: getSettingData(),
+        config: getSettingData(),
       })
     )
   })
@@ -116,7 +116,7 @@ onMounted(() => {
       'getData',
       JSON.stringify({
         pageConfig: pageData,
-        content: getSettingData(),
+        config: getSettingData(),
       })
     )
   })
