@@ -13,7 +13,7 @@ function runLogicParse(str) {
   let protocol, selfHost, search, params
   if (result !== null) {
     protocol = result[1]
-    selfHost = result[2] + result[3]
+    selfHost = result[3] ? result[2] + result[3] : result[2]
     search = result[4]
     params = (function () {
       if (search) {
@@ -107,6 +107,7 @@ export default {
         document.querySelector('#' + clickConfig.href)?.scrollIntoView()
         break
       case 'code':
+        new Function(clickConfig.href).call(context)
         break
     }
   },

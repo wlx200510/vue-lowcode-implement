@@ -59,11 +59,7 @@ export default {
           e.offsetY > clickSettingData.y &&
           e.offsetY < clickSettingData.y + clickSettingData.h
         if (isXClick && isYClick) {
-          if (clickSettingData.click.type === 'code') {
-            eval(clickSettingData.click.href)
-          } else {
-            Utils.parseClickConfig(clickSettingData.click, this)
-          }
+          Utils.parseClickConfig(clickSettingData.click, this)
         }
       }
     },

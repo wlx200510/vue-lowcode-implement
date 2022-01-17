@@ -22,7 +22,7 @@ function active() {
     el: container,
     data() {
       if (typeof compData !== 'object') {
-        props = {
+        return {
           data: [],
         }
       }
@@ -45,7 +45,7 @@ function active() {
       this.removeLock()
     },
   })
-
+  console.log(t)
   document.body.appendChild(t.$el)
 }
 

@@ -64,11 +64,7 @@ export default {
     triggerClick(item) {
       console.log(item)
       if (!this.preview) {
-        if (item.click.type === 'code') {
-          eval(item.click.href)
-        } else {
-          Utils.parseClickConfig(item.click, this)
-        }
+        Utils.parseClickConfig(item.click, this)
       }
     },
   },
@@ -76,6 +72,9 @@ export default {
 </script>
 
 <style rel="stylesheet/scss" lang="scss" scoped>
+.comp-content {
+  background-color: #ffffff;
+}
 .grid-menu {
   position: relative;
   margin: 0;
@@ -118,7 +117,6 @@ export default {
       display: block;
       margin: 5px auto 0 auto;
       font-size: 12px;
-      color: #0a1b2b;
     }
   }
 }

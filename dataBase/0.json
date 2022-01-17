@@ -15,7 +15,9 @@
       "name": "ruleDialog",
       "path": "plugin/_ruleDialog/index.js",
       "desc": "规则弹窗",
-      "props": {}
+      "props": {
+        "data": []
+      }
     }
   ],
   "pages": [
@@ -103,9 +105,12 @@
                 "index": 0,
                 "x": 0,
                 "y": 0,
-                "w": 225,
-                "h": 64,
-                "click": null
+                "w": 375,
+                "h": 306,
+                "click": {
+                  "type": "logic",
+                  "href": "Plugin://ruleDialog"
+                }
               }
             ]
           },
