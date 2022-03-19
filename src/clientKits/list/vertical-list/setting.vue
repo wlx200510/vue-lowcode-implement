@@ -17,6 +17,16 @@
             placeholder="必填"
           ></el-input>
         </el-form-item>
+        <template v-if="item.click">
+          <el-form-item class="small" label="跳转到：">
+            <span style="word-break: break-all">{{ item.click.href }}</span>
+          </el-form-item>
+        </template>
+        <el-form-item class="small" label="点击配置：">
+          <el-button icon="el-icon-edit" round @click="showClick(item, idx)"
+            >配置跳转</el-button
+          >
+        </el-form-item>
         <div class="list-item-opt">
           <a href="javascript:;" v-if="idx !== 0" @click="upItem(idx)"
             ><i class="el-icon-arrow-up"></i
@@ -53,12 +63,12 @@ export default {
   },
   data() {
     return {
-      list: this.items,
+      list: this.config,
       defaultConf: util.copyObj(compConfig['vertical-list']),
     }
   },
   props: {
-    items: {
+    config: {
       type: Array,
     },
   },
@@ -78,10 +88,13 @@ export default {
     },
     addItem() {
       if (this.list.length < 20) {
-        this.list.push(util.copyObj(this.defaultConf.action.config[0]))
+        this.list.push(util.copyObj(this.defaultConf.settings.config[0]))
       } else {
         this.$alert('最多添加20个列表项！')
       }
+    },
+    showClick(item, idx) {
+      this.$bus.$emit('click:show', idx, ['outside', 'page'])
     },
   },
 }

@@ -96,6 +96,7 @@ export default {
     return time_str
   },
   parseClickConfig(clickConfig, context) {
+    if (!clickConfig) return
     switch (clickConfig.type) {
       case 'outside':
         location.href = clickConfig.href

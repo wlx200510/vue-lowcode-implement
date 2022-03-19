@@ -9,7 +9,11 @@
       :style="{ width: width, height: height }"
     >
       <div class="swiper-wrapper">
-        <div v-for="banner in banners" class="swiper-slide">
+        <div
+          v-for="banner in banners"
+          class="swiper-slide"
+          @click="triggerClick(banner)"
+        >
           <img v-if="banner.val" :src="banner.val" />
           <div v-else class="image-placeholder">
             <i class="fa fa-caret-square-o-right"></i>
@@ -24,6 +28,7 @@
 <script>
 import Swiper from 'swiper'
 import 'swiper/dist/css/swiper.min.css'
+import Utils from '@/utils/util'
 
 export default {
   name: 'SwiperBanner',
@@ -31,11 +36,16 @@ export default {
     component: {
       type: Object,
     },
+    preview: {
+      type: Boolean,
+      default: false,
+    },
   },
   data() {
     return {
       swiper: null,
-      banners: this.component.action.config,
+      banners: this.component.settings.config,
+      autoplay: this.component.base[0].val,
       pagination: this.component.base[1].val,
       height: this.getMaxHeight(),
       width: this.getWidth(),
@@ -54,7 +64,8 @@ export default {
   watch: {
     component: {
       handler() {
-        this.banners = this.component.action.config
+        this.banners = this.component.settings.config
+        this.autoplay = this.component.base[0].val
         this.pagination = this.component.base[1].val
         this.height = this.getMaxHeight()
         this.width = this.getWidth()
@@ -64,12 +75,23 @@ export default {
       },
       deep: true,
     },
+    autoplay: function (newVal) {
+      newVal ? this.swiper.autoplay.start() : this.swiper.autoplay.stop()
+    },
   },
   methods: {
+    triggerClick(data) {
+      if (!this.preview) {
+        Utils.parseClickConfig(data.click, this)
+      }
+    },
     getMaxHeight() {
       let h = 0
-      if (this.component.action.config && this.component.action.config.length) {
-        this.component.action.config.forEach((item) => {
+      if (
+        this.component.settings.config &&
+        this.component.settings.config.length
+      ) {
+        this.component.settings.config.forEach((item) => {
           if (item.height && item.height > h) {
             h = item.height
           }
@@ -86,7 +108,7 @@ export default {
   },
   mounted() {
     this.swiper = new Swiper('#' + this.component.domId, {
-      autoplay: false,
+      autoplay: this.autoplay,
       pagination: {
         el: '.swiper-pagination',
       },

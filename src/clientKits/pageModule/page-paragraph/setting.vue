@@ -49,13 +49,21 @@ import compConfig from '@/config/comp.config.js'
 export default {
   data() {
     return {
-      items: this.paragraphs,
+      items: this.config,
       defaultConf: util.copyObj(compConfig['page-paragraph']),
     }
   },
   props: {
-    paragraphs: {
+    config: {
       type: Array,
+    },
+  },
+  watch: {
+    config: {
+      handler(val) {
+        this.items = val
+      },
+      deep: true,
     },
   },
   methods: {
@@ -74,7 +82,7 @@ export default {
     },
     addInput() {
       if (this.items.length <= 20) {
-        this.items.push(util.copyObj(this.defaultConf.action.config[0]))
+        this.items.push(util.copyObj(this.defaultConf.settings.config[0]))
       } else {
         this.$alert('最多添加20个段落项！')
       }

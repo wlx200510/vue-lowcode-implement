@@ -8,6 +8,7 @@
         :style="{ lineHeight: component.style[2].val + 'px' }"
         v-for="mq in marquees"
         class="marquee-item"
+        @click="triggerClick(mq)"
       >
         {{ mq.text }}
       </li>
@@ -17,11 +18,17 @@
 
 <script>
 import NewsMarquee from '@/utils/news-marquee.js'
+import Utils from '@/utils/util'
+
 export default {
   name: 'NewsMarquee',
   props: {
     component: {
       type: Object,
+    },
+    preview: {
+      type: Boolean,
+      default: false,
     },
   },
   data() {
@@ -32,7 +39,7 @@ export default {
         speed: 1000 / 60, // 滚动速度
         pause: 3500, // 停顿时间
       },
-      marquees: this.component.action.config,
+      marquees: this.component.settings.config,
     }
   },
   computed: {
@@ -58,7 +65,7 @@ export default {
   watch: {
     component: {
       handler() {
-        this.marquees = this.component.action.config
+        this.marquees = this.component.settings.config
         this.marqueeOption.successive = this.component.style[0].val
         // 需要重新初始化marquee对象
         if (this.marquee) {
@@ -68,6 +75,13 @@ export default {
         this.marquee = new NewsMarquee('#line-marquee', this.marqueeOption)
       },
       deep: true,
+    },
+  },
+  methods: {
+    triggerClick(data) {
+      if (!this.preview) {
+        Utils.parseClickConfig(data.click, this)
+      }
     },
   },
   mounted() {

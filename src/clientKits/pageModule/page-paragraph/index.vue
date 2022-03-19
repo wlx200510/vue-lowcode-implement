@@ -9,7 +9,7 @@
       </span>
       <span class="title-h1">{{ component.base[1].val }}</span>
     </div>
-    <div class="page-paragraph" v-for="item in component.action.config">
+    <div class="page-paragraph" v-for="item in component.settings.config">
       <label class="page-paragraph__label">
         {{ item.label }}
       </label>
@@ -80,6 +80,7 @@ export default {
 
 .page-paragraph {
   display: flex;
+  margin-bottom: 10px;
 
   .page-paragraph__label {
     display: block;

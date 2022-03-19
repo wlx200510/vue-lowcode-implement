@@ -47,19 +47,19 @@ export default {
   data() {
     return {
       defaultConf: util.copyObj(compConfig['scroll-left']),
-      items: this.scrolls,
+      items: this.config,
     }
   },
   components: {
     upload,
   },
   props: {
-    scrolls: {
+    config: {
       type: Array,
     },
   },
   watch: {
-    scrolls: {
+    config: {
       handler(val) {
         this.items = val
       },
@@ -85,7 +85,7 @@ export default {
     },
     addItem() {
       if (this.items.length < 10) {
-        this.items.push(util.copyObj(this.defaultConf.action.config[0]))
+        this.items.push(util.copyObj(this.defaultConf.settings.config[0]))
       } else {
         this.$alert('最多添加10个图片项！')
       }

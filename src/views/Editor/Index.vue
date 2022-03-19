@@ -200,7 +200,7 @@ function insertCompAndSelect(compData, index) {
       compList.value.splice(index - 1, 0, compData)
       currentIndex.value = index
     } else {
-      compList.value.splice(index + 1, 0, compData)
+      compList.value.splice(index, 0, compData)
       currentIndex.value = index + 1
     }
     // 显示配置项
@@ -328,7 +328,7 @@ onMounted(() => {
     clickShow.value = true
   })
   $bus.$on('click:submit', (idx, config) => {
-    if (idx > -1 && config) {
+    if (idx > -1) {
       compList.value[currentIndex.value].settings.config[idx].click = config
     }
   })

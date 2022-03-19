@@ -54,19 +54,19 @@ export default {
   data() {
     return {
       defaultConf: util.copyObj(compConfig['swiper-banner']),
-      slides: this.banners,
+      slides: this.config,
     }
   },
   components: {
     upload,
   },
   props: {
-    banners: {
+    config: {
       type: Array,
     },
   },
   watch: {
-    banners: {
+    config: {
       handler(val) {
         this.slides = val
       },
@@ -93,7 +93,7 @@ export default {
     },
     addBanner() {
       if (this.slides.length < 10) {
-        this.slides.push(util.copyObj(this.defaultConf.action.config[0]))
+        this.slides.push(util.copyObj(this.defaultConf.settings.config[0]))
       } else {
         this.$alert('最多添加10个图片项！')
       }

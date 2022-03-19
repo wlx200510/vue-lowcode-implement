@@ -254,7 +254,7 @@ module.exports = {
     },
     base: [
       {
-        type: 'text',
+        type: 'base-text',
         label: '提交地址',
         val: '',
         placeholder: '表单提交的接口地址',
@@ -539,7 +539,7 @@ module.exports = {
       config: [
         {
           desc: '字段描述：',
-          type: 'text',
+          type: 'base-text',
           name: 'name',
           placeholder: '',
           isNecessary: 1,
@@ -647,6 +647,8 @@ module.exports = {
     action: {
       type: 'swiper-click',
       title: '图片项配置',
+    },
+    settings: {
       config: [
         {
           val: '',
@@ -740,6 +742,8 @@ module.exports = {
     action: {
       type: 'left-scroll-click',
       title: '滚动项配置',
+    },
+    settings: {
       config: [
         {
           val: '',
@@ -913,6 +917,8 @@ module.exports = {
     action: {
       type: 'marquee-click',
       title: '滚动项配置',
+    },
+    settings: {
       config: [
         {
           text: '滚动新闻默认文本',
@@ -1042,7 +1048,7 @@ module.exports = {
       config: [
         {
           desc: '点击项配置',
-          type: 'text',
+          type: 'basee-text',
           name: 'click',
           click: null,
           val: '',
@@ -1056,15 +1062,15 @@ module.exports = {
     domName: '',
     base: [
       {
-        type: 'text',
+        type: 'base-text',
         label: '主标题',
         val: '主标题文案',
         isNecessary: true,
       },
       {
-        type: 'text',
+        type: 'base-text',
         label: '副标题',
-        val: '副标题文案 - 作者 - 2019.09.09',
+        val: '副标题文案 - 作者 - 2021.12.09',
         isNecessary: false,
       },
     ],
@@ -1260,7 +1266,7 @@ module.exports = {
         ],
       },
       {
-        type: 'text',
+        type: 'base-text',
         label: '标题文案',
         val: '标题',
         isNecessary: true,
@@ -1321,6 +1327,8 @@ module.exports = {
     action: {
       type: 'page-paragraph-list',
       title: '段落项',
+    },
+    settings: {
       config: [
         {
           label: '1、',
@@ -1338,7 +1346,7 @@ module.exports = {
       {
         type: 'textarea',
         label: '文本内容',
-        val: 'H5制作工厂是一个移动端页面设计和制作平台，无需任何开发经营也可以制作自己的移动端站点和页面，从灵感到实现，您只需要10分钟。',
+        val: '这是一个移动端页面设计和制作平台，无需任何开发经营也可以制作自己的移动端站点和页面，从灵感到实现，您只需要10分钟。',
         isNecessary: true,
       },
     ],
@@ -1480,7 +1488,9 @@ module.exports = {
     ],
     action: {
       type: 'page-faq-list',
-      title: '聊天项配置',
+      title: 'F&Q配置',
+    },
+    settings: {
       config: [
         {
           text: '默认FAQ信息',
@@ -1491,7 +1501,7 @@ module.exports = {
             h: 50,
             s: 40,
           },
-          nickName: '昵称',
+          title: '问题描述',
         },
       ],
     },
@@ -1631,9 +1641,11 @@ module.exports = {
     action: {
       type: 'horizontal-item-click',
       title: '列表项配置',
+    },
+    settings: {
       config: [
         {
-          val: 'https://yangyuji.github.io/h5-factory/static/img/logo.png',
+          val: '',
           title: '默认标题',
           desc: '默认文案描述，默认文案描述，默认文案描述默认文案描述',
           click: null,
@@ -1787,15 +1799,17 @@ module.exports = {
     action: {
       type: 'vertical-item-click',
       title: '列表项配置',
+    },
+    settings: {
       config: [
         {
-          val: 'https://yangyuji.github.io/h5-factory/static/img/logo.png',
+          val: 'https://wlx200510.github.io/assets/images/avatar.jpg',
           title: '默认标题',
           desc: '默认文案描述，默认文案描述，默认文案描述默认文案描述',
           click: null,
         },
         {
-          val: 'https://yangyuji.github.io/h5-factory/static/img/logo.png',
+          val: 'https://wlx200510.github.io/assets/images/avatar.jpg',
           title: '默认标题',
           desc: '默认文案描述，默认文案描述，默认文案描述默认文案描述',
           click: null,

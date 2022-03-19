@@ -11,7 +11,8 @@
 - [X] clickConfig功能完善化
 - [X] click的配置解析函数补充完成
 - [X] code input升级为vue-codemirror
-- [] 基本组件的能力补齐 —— 通用组件已完成
+- [X] 基本组件的能力补齐 —— 组件已完成
+- [] 重构comp.config.js: 整合进入config.js, 移除无用的assert字段(config.json需要变为js)
 - [] C端真实页面index.html的动态路由和动态功能的解析逻辑(国际化能力待补充)
 
 ## 项目介绍
@@ -105,7 +106,9 @@
 - 数据源来源：dataBase/0.json
 - 所需要实现的功能
   1. 两种类型的页面解析
-  2. 插件信息的解析的加载
+  2. 插件信息的解析的加载 ———— 插件的初始化确定是数据层的逻辑?
+     - 插件的内容，初始化的参数在哪里配置？
+     - 插件是否可以可配置？
   3. store信息的解析和加载
   4. 确定公共的store功能 ———— 打点
 目录划分：
@@ -113,6 +116,8 @@
   - views
   - components: 如toast/确认弹窗等业务无关的组件
   - bootstrap
+
+有三种新建迭代模式：新增组件 & 新增页面(preBuildPages) & 新增工程类型
 
 ### Customize configuration
 See [Configuration Reference](https://cli.vuejs.org/config/).

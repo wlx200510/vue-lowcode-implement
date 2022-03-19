@@ -59,6 +59,7 @@ function loadSettingKitList() {
     if (vm) {
       BackendKitList.push(new SettingKit(config, vm))
     } else {
+      // 表示对应的组件没有setting.vue配置项
       console.warn(`[kit.backend.controller] cannot match ${folderKey}`)
     }
   }

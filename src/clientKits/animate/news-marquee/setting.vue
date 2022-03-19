@@ -52,16 +52,16 @@ export default {
   data() {
     return {
       defaultConf: util.copyObj(compConfig['news-marquee']),
-      items: this.marquees,
+      items: this.config,
     }
   },
   props: {
-    marquees: {
+    config: {
       type: Array,
     },
   },
   watch: {
-    marquees: {
+    config: {
       handler(val) {
         this.items = val
       },
@@ -87,7 +87,7 @@ export default {
     },
     addItem() {
       if (this.items.length < 10) {
-        this.items.push(util.copyObj(this.defaultConf.action.config[0]))
+        this.items.push(util.copyObj(this.defaultConf.settings.config[0]))
       } else {
         this.$alert('最多添加10个滚动项！')
       }

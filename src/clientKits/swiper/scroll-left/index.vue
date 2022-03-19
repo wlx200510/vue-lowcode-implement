@@ -6,7 +6,12 @@
     <section v-show="component.style[0].val === 'scroll-x'" class="scroll-left">
       <div id="scroll-one" class="scroll-wrapper">
         <div class="scroll-content">
-          <div class="slide" v-for="(item, idx) in scrolls">
+          <div
+            class="slide"
+            v-for="(item, idx) in scrolls"
+            :key="idx"
+            @click="triggerClick(item)"
+          >
             <img v-if="item.val" :src="item.val" />
             <div v-else class="image-placeholder">
               <i class="fa fa-image"></i>
@@ -25,7 +30,11 @@
       id="scroll-two"
     >
       <div class="scroll-content">
-        <div v-for="item in scrolls" class="scroll-item">
+        <div
+          v-for="item in scrolls"
+          class="scroll-item"
+          @click="triggerClick(item)"
+        >
           <img v-if="item.val" :src="item.val" />
           <div v-else class="image-placeholder">
             <i class="fa fa-image"></i>
@@ -39,6 +48,7 @@
 
 <script>
 import IScroll from 'iscroll'
+import Utils from '@/utils/util'
 
 export default {
   name: 'ScrollLeft',
@@ -46,12 +56,16 @@ export default {
     component: {
       type: Object,
     },
+    preview: {
+      type: Boolean,
+      default: false,
+    },
   },
   data() {
     return {
       leftScroll: null,
       noScroll: null,
-      scrolls: this.component.action.config,
+      scrolls: this.component.settings.config,
     }
   },
   computed: {
@@ -67,7 +81,7 @@ export default {
   watch: {
     component: {
       handler() {
-        this.scrolls = this.component.action.config
+        this.scrolls = this.component.settings.config
         // 每改变项都需要重新初始化iscroll对象
         this.initScroll()
       },
@@ -104,6 +118,11 @@ export default {
             preventDefault: false,
           })
         }, 0)
+      }
+    },
+    triggerClick(data) {
+      if (!this.preview) {
+        Utils.parseClickConfig(data.click, this)
       }
     },
   },

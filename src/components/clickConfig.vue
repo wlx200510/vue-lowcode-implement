@@ -227,23 +227,29 @@ function clickTab(tab) {
 }
 function sure() {
   dialogShow.value = false
-  if (currentTab.value === 'outside' && outsideVal.value) {
-    returnVal = {
-      type: 'outside',
-      href: outsideVal.value,
-    }
+  if (currentTab.value === 'outside') {
+    returnVal = outsideVal.value
+      ? {
+          type: 'outside',
+          href: outsideVal.value,
+        }
+      : null
   }
-  if (currentTab.value === 'logic' && logicType) {
-    returnVal = {
-      type: 'logic',
-      href: `${logicType.value}://${logicContent.value}`,
-    }
+  if (currentTab.value === 'logic') {
+    returnVal = logicType
+      ? {
+          type: 'logic',
+          href: `${logicType.value}://${logicContent.value}`,
+        }
+      : null
   }
-  if (currentTab.value === 'code' && codeVal.value) {
-    returnVal = {
-      type: 'code',
-      href: codeVal.value,
-    }
+  if (currentTab.value === 'code') {
+    returnVal = codeVal.value
+      ? {
+          type: 'code',
+          href: codeVal.value,
+        }
+      : null
   }
   $bus.$emit('click:submit', props.index, returnVal)
 }
