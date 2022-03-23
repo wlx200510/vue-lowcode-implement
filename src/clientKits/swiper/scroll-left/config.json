@@ -1,9 +1,0 @@
-{
-  "name": "scrollLeft",
-  "key": "scroll-left",
-  "text": "横向滚动",
-  "icon": "fa-exchange",
-  "category": "swiper",
-  "projectTypes": [],
-  "condition": {}
-}

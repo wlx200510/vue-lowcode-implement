@@ -1,0 +1,115 @@
+export default {
+  name: 'swiperBanner',
+  key: 'swiper-banner',
+  text: '轮播图',
+  icon: 'fa-caret-square-o-right',
+  category: 'swiper',
+  projectTypes: [],
+  condition: {},
+  default: {
+    title: '轮播图',
+    domId: '',
+    domName: '',
+    base: [
+      {
+        type: 'radio',
+        label: '自动播放',
+        attr: 'autoplay',
+        val: true,
+        options: [
+          {
+            name: '是',
+            val: true,
+          },
+          {
+            name: '否',
+            val: false,
+          },
+        ],
+        isNecessary: false,
+      },
+      {
+        type: 'radio',
+        label: '显示分页',
+        attr: 'pagination',
+        val: true,
+        options: [
+          {
+            name: '是',
+            val: true,
+          },
+          {
+            name: '否',
+            val: false,
+          },
+        ],
+        isNecessary: false,
+      },
+    ],
+    style: [
+      {
+        type: 'color-picker',
+        label: '背景颜色',
+        attr: 'background-color',
+        val: 'rgba(255, 255, 255, 0)',
+        isNecessary: true,
+      },
+      {
+        type: 'input-number',
+        label: '上边距',
+        attr: 'padding-top',
+        val: 0,
+        unit: 'px',
+        min: 0,
+        max: 50,
+        step: 1,
+        isNecessary: true,
+      },
+      {
+        type: 'input-number',
+        label: '右边距',
+        attr: 'padding-right',
+        val: 0,
+        unit: 'px',
+        min: 0,
+        max: 50,
+        step: 1,
+        isNecessary: true,
+      },
+      {
+        type: 'input-number',
+        label: '下边距',
+        attr: 'padding-bottom',
+        val: 0,
+        unit: 'px',
+        min: 0,
+        max: 50,
+        step: 1,
+        isNecessary: true,
+      },
+      {
+        type: 'input-number',
+        label: '左边距',
+        attr: 'padding-left',
+        val: 0,
+        unit: 'px',
+        min: 0,
+        max: 50,
+        step: 1,
+        isNecessary: true,
+      },
+    ],
+    action: {
+      type: 'swiper-click',
+      title: '图片项配置',
+    },
+    settings: {
+      config: [
+        {
+          val: '',
+          click: null,
+        },
+      ],
+    },
+  },
+}

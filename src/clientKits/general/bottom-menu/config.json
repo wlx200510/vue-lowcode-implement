@@ -1,9 +1,0 @@
-{
-  "name": "bottomMenu",
-  "key": "bottom-menu",
-  "text": "底部导航",
-  "icon": "fa-adjust",
-  "category": "general",
-  "projectTypes": [],
-  "condition": {}
-}

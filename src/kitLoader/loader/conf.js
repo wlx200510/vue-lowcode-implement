@@ -9,22 +9,22 @@ function getConfigModules(context) {
   return context
     .keys()
     .map((key) => {
-      const curConfigJson = context(key)
+      const curConfigJson = context(key).default
       const kitConfig = autoCompletion(curConfigJson)
 
-      kitConfig.folderKey = key.toString().replace(/config.json/g, '')
+      kitConfig.folderKey = key.toString().replace(/config.js/g, '')
       return kitConfig
     })
     .filter((kitConfig) => isValid(kitConfig))
 }
 
-// 读取 config.json 设置 folderKey
+// 读取 config.js 设置 folderKey
 export default function () {
   if (configModules) {
     return configModules
   }
 
-  const context = require.context(`../../clientKits`, true, /config.json$/)
+  const context = require.context(`../../clientKits`, true, /config.js$/)
 
   configModules = [...getConfigModules(context)]
 

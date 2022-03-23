@@ -100,7 +100,7 @@ import { useRouter } from 'vue2-helpers/vue-router'
 
 import Upload from '@/components/common/upload.vue'
 import { activityPlugins } from '@/const/pageDict'
-import getUseablePrePages from '@/prePages'
+import getUseablePrePages from '/client/prePages'
 import baseData from '@d'
 
 const formLabelWidth = '100px'

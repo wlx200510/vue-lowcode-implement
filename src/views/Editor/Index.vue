@@ -128,7 +128,7 @@ import previewDialog from '@/components/preview.vue'
 // 页面默认配置更改此配置可以更改页面配置
 import pageOption from '@/config/page.config.js'
 // 组件默认配置
-import compConfig from '@/config/comp.config.js'
+import { getAllClientSchema } from '@/kitLoader/client.js'
 import baseData from '@d' // 数据源
 
 const { $bus, $confirm, $message } = getCurrentInstance().proxy
@@ -148,6 +148,7 @@ let click = reactive({
   index: 0,
   tabs: [],
 })
+const compConfig = getAllClientSchema()
 
 const hasFixedComp = computed(() => compList.value.some((item) => item.fixed))
 

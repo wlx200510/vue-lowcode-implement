@@ -1,8 +1,10 @@
 import loadViewModules from './loader/view'
 import loadConfModules from './loader/conf'
 import { isArrayNoneEmpty, line2Hump } from '@/utils/tool'
+import util from '@/utils/util.js'
 let seed = 0
 let ClientKitList = null
+let allDefaultSchema = null
 
 /**
  * @param {object} config       配置文件
@@ -23,7 +25,7 @@ class ClientKit {
   }
 }
 
-// 以【folderKey】作为标记关联 config.json & view.vue
+// 以【folderKey】作为标记关联 config.js & view.vue
 function loadClientKitList() {
   if (isArrayNoneEmpty(ClientKitList)) {
     return ClientKitList
@@ -46,6 +48,20 @@ function loadClientKitList() {
   }
 
   return ClientKitList
+}
+
+export function getAllClientSchema() {
+  if (allDefaultSchema) {
+    return allDefaultSchema
+  }
+  const compConfigs = loadConfModules()
+
+  const result = compConfigs.reduce((origin, item) => {
+    origin[item.key] = util.copyObj(item.default)
+    return origin
+  }, {})
+  allDefaultSchema = result
+  return result
 }
 
 export default {

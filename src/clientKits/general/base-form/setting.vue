@@ -66,12 +66,12 @@
 
 <script>
 import util from '@/utils/util.js'
-import compConfig from '@/config/comp.config.js'
+import compConfig from './config.js'
 export default {
   data() {
     return {
       inputs: this.config,
-      defaultConf: util.copyObj(compConfig['base-form']),
+      defaultConf: util.copyObj(compConfig.default),
       inputTypes: [
         {
           name: '文本',

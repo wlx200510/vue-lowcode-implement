@@ -43,8 +43,5 @@ export default {
 <style rel="stylesheet/scss" lang="scss" scoped>
 .page-faq {
   display: flex;
-
-  .faq-item {
-  }
 }
 </style>

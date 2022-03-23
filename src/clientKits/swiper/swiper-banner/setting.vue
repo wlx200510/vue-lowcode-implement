@@ -47,13 +47,13 @@
 
 <script>
 import util from '@/utils/util.js'
-import compConfig from '@/config/comp.config.js'
+import compConfig from './config.js'
 import upload from '@/components/common/upload.vue'
 
 export default {
   data() {
     return {
-      defaultConf: util.copyObj(compConfig['swiper-banner']),
+      defaultConf: util.copyObj(compConfig.default),
       slides: this.config,
     }
   },

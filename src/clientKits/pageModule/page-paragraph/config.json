@@ -1,9 +1,0 @@
-{
-  "name": "pageParagraph",
-  "key": "page-paragraph",
-  "text": "段落模块",
-  "icon": "fa-paragraph",
-  "category": "pageModule",
-  "projectTypes": [],
-  "condition": {}
-}

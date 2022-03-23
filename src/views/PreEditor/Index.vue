@@ -59,7 +59,7 @@ function setPrePageOption(config, formData) {
         base: {
           name: pageDataVal.prePageData.name,
           router: `/pre/${pageDataVal.prePageData.router}`,
-          position: `/src/prePages/${pageDataVal.prePageData.router}/index.vue`,
+          position: `/client/prePages/${pageDataVal.prePageData.router}/index.vue`,
         },
       },
       formData

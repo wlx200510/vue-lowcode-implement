@@ -1,9 +1,0 @@
-{
-  "name": "verticalList",
-  "key": "vertical-list",
-  "text": "纵向列表",
-  "icon": "fa-columns",
-  "category": "list",
-  "projectTypes": [],
-  "condition": {}
-}

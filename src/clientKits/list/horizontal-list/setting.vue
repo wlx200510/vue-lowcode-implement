@@ -56,7 +56,7 @@
 <script>
 import util from '@/utils/util.js'
 import upload from '@/components/common/upload.vue'
-import compConfig from '@/config/comp.config.js'
+import compConfig from './config.js'
 export default {
   components: {
     upload,
@@ -64,7 +64,7 @@ export default {
   data() {
     return {
       list: this.config,
-      defaultConf: util.copyObj(compConfig['horizontal-list']),
+      defaultConf: util.copyObj(compConfig.default),
     }
   },
   props: {

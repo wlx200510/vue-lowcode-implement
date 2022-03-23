@@ -12,8 +12,8 @@
 - [X] click的配置解析函数补充完成
 - [X] code input升级为vue-codemirror
 - [X] 基本组件的能力补齐 —— 组件已完成
-- [] 重构comp.config.js: 整合进入config.js, 移除无用的assert字段(config.json需要变为js)
-- [] C端真实页面index.html的动态路由和动态功能的解析逻辑(国际化能力待补充)
+- [X] 重构comp.config.js: 整合进入config.js, 移除无用的assert字段(config.json需要变为js)
+- [ ] C端真实页面index.html的动态路由和动态功能的解析逻辑(国际化能力待补充)
 
 ## 项目介绍
 虽然项目名称上包括了lowcode，不过本项目实际是为了探索一整套的前端页面管理架构，不止是低代码生成JSON然后动态解析为C端页面。其整体思路是把页面的功能和内容都在B端做一个管理，使得页面有一套有较高可视化和较强配置能力的后台，达到研发人员快速熟悉前端业务，简单改动通过配置解决，复杂页面通过写可复用的代码解决 这么一套提效和赋能的工具。
@@ -115,7 +115,7 @@
   - store
   - views
   - components: 如toast/确认弹窗等业务无关的组件
-  - bootstrap
+  - bootstrap未补充
 
 有三种新建迭代模式：新增组件 & 新增页面(preBuildPages) & 新增工程类型
 

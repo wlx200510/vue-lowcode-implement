@@ -47,11 +47,11 @@
 
 <script>
 import util from '@/utils/util.js'
-import compConfig from '@/config/comp.config.js'
+import compConfig from './config.js'
 export default {
   data() {
     return {
-      defaultConf: util.copyObj(compConfig['floor-menu']),
+      defaultConf: util.copyObj(compConfig.default),
       items: this.config,
     }
   },

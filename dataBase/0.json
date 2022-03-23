@@ -498,7 +498,7 @@
         "base": {
           "name": "记录页面",
           "router": "/pre/record",
-          "position": "/src/prePages/record/index.vue"
+          "position": "/client/prePages/record/index.vue"
         },
         "style": {
           "background-color": "#E6D415",

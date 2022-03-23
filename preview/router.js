@@ -5,7 +5,7 @@ import { firstLetterUpper } from '@/utils/tool'
 import buildView from './buildView.vue'
 
 Vue.use(Router)
-const context = require.context(`../src/prePages`, true, /index.vue$/)
+const context = require.context(`../client/prePages`, true, /index.vue$/)
 const routes = context.keys().map((key) => {
   const compData = context(key).default
   const pathName = path.dirname(key.toString()).slice(2)

@@ -5,7 +5,9 @@
 <script>
 export default {
   name: 'app',
-  mounted() {},
+  mounted() {
+    console.log('enter')
+  },
 }
 </script>
 <style lang="scss" scoped></style>

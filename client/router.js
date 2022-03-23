@@ -5,14 +5,14 @@ import { firstLetterUpper } from '@/utils/tool'
 import prePage from './views/prePages'
 
 Vue.use(Router)
-const context = require.context(`../src/prePages`, true, /index.vue$/)
+const context = require.context(`./prePages`, true, /index.vue$/)
 const routes = context.keys().map((key) => {
   const pathName = path.dirname(key.toString()).slice(2)
   return {
     path: `${pathName}`,
     component: () =>
       import(
-        /* webpackChunkName: "[request]" */ `../src/prePages/${pathName}/index`
+        /* webpackChunkName: "[request]" */ `./prePages/${pathName}/index`
       ),
     name: firstLetterUpper(pathName),
   }

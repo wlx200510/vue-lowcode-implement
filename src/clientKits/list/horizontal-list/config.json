@@ -1,9 +1,0 @@
-{
-  "name": "horizontalList",
-  "key": "horizontal-list",
-  "text": "横向列表",
-  "icon": "fa-th-list",
-  "category": "list",
-  "projectTypes": [],
-  "condition": {}
-}
