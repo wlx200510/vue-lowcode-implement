@@ -26,9 +26,8 @@ import appTopbar from './layout/topbar.vue'
 import AppPageSetting from './layout/pageSetting.vue'
 
 import pageOption from '@/config/prebuild.config.js'
-import baseData from '@d' // 数据源
 
-const { $message } = getCurrentInstance().proxy
+const { $message, $store } = getCurrentInstance().proxy
 let projectDataVal = null,
   pageDataVal = null
 const pageConfig = ref(util.copyObj(pageOption))
@@ -40,10 +39,10 @@ let handShake = null
 
 function setLocalPageData() {
   // routeData.params.id routeData.params.pageId
-  projectDataVal = baseData.find(
+  projectDataVal = $store.state.projects.find(
     (item) => item.id === Number(routeData.params.id)
   )
-  pageDataVal = projectDataVal.pages.find(
+  pageDataVal = projectDataVal.renderData.pages.find(
     (item) => item.pageId === Number(routeData.params.pageId)
   )
   pageConfig.value = setPrePageOption(pageDataVal?.pageConfig, pageConfig.value)
@@ -68,17 +67,19 @@ function setPrePageOption(config, formData) {
 }
 
 function savePageSet() {
-  console.warn(
-    'save Info: ',
-    JSON.stringify({
-      ...pageDataVal,
-      config: getSettingData(),
-      pageConfig: getPageOptionData(pageConfig.value),
-    })
+  pageDataIndex = projectDataVal.renderData.pages.findIndex(
+    (item) => item.pageId === Number(routeData.params.pageId)
   )
-  $message({
-    message: '打开chomre devtool查看保存的信息！',
-    type: 'success',
+  projectDataVal.renderData.pages[pageDataIndex] = {
+    ...pageDataVal,
+    config: getSettingData(),
+    pageConfig: getPageOptionData(pageConfig.value),
+  }
+  $store.dispatch('updateOldProject', projectDataVal).then(() => {
+    $message({
+      message: '保存成功',
+      type: 'success',
+    })
   })
 }
 function getSettingData() {

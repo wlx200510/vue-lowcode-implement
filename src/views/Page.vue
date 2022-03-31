@@ -95,16 +95,22 @@
 
 <script setup>
 // @todo: 如果是预制页面，则需要从所有预制页面中选择对应的选项
-import { reactive, ref, onBeforeMount, computed } from '@vue/composition-api'
+import {
+  reactive,
+  ref,
+  onBeforeMount,
+  computed,
+  getCurrentInstance,
+} from '@vue/composition-api'
 import { useRouter } from 'vue2-helpers/vue-router'
 
 import Upload from '@/components/common/upload.vue'
 import { activityPlugins } from '@/const/pageDict'
 import getUseablePrePages from '/client/prePages'
-import baseData from '@d'
 
 const formLabelWidth = '100px'
 const router = useRouter()
+const { $store } = getCurrentInstance().proxy
 const routeData = router.currentRoute
 const projectData = ref(null)
 const pageData = ref([])
@@ -156,27 +162,30 @@ function editPage(page) {
 function savePage() {
   if (form.value.pageId) {
     const curEditPage = pageData.value.find(
-      (item) => item.pageId === form.pageId
+      (item) => item.pageId === form.value.pageId
     )
     Object.assign(curEditPage, { ...form.value })
   } else {
     pageData.value.push({
       ...form.value,
-      pageId: pageData.value[pageData.value.length - 1].pageId + 1,
+      pageId: 1,
       config: form.pageType === 0 ? [] : null,
       pageConfig: null,
     })
   }
-  console.log(JSON.stringify(pageData.value))
-  dialogFormVisible.value = false
+  projectData.value.renderData.pages = pageData.value
+  $store.dispatch('updateOldProject', projectData.value).then(() => {
+    dialogFormVisible.value = false
+  })
 }
 
 onBeforeMount(() => {
   // 根据routeData.params.id来请求接口，获取此id下的所有页面
-  projectData.value = baseData.find(
+  projectData.value = $store.state.projects.find(
     (item) => item.id === Number(routeData.params.id)
   )
-  pageData.value = projectData.value.pages
+
+  pageData.value = projectData.value.renderData.pages
   prePageArr.value = getUseablePrePages(projectData.value.projectType)
 })
 </script>

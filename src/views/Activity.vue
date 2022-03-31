@@ -49,7 +49,7 @@
       </div>
     </el-dialog>
     <el-button type="primary" @click="onButtonClick">创建项目</el-button>
-    <el-table :data="ActivityData" style="width: 100%">
+    <el-table :data="$store.state.projects" style="width: 100%">
       <el-table-column label="日期" width="180">
         <template slot-scope="scope">
           <i class="el-icon-time"></i>
@@ -68,7 +68,7 @@
       </el-table-column>
       <el-table-column label="包含页面数" width="180">
         <template slot-scope="scope">
-          {{ scope.row.pages.length }}
+          {{ scope.row.renderData.pages.length }}
         </template>
       </el-table-column>
       <el-table-column label="操作" align="center">
@@ -101,7 +101,7 @@
       :page-sizes="[10, 20, 50, 100]"
       :page-size="10"
       layout="total, sizes, prev, pager, next, jumper"
-      :total="baseData.length"
+      :total="$store.state.projects.length"
     ></el-pagination>
   </div>
 </template>
@@ -110,18 +110,19 @@
 import {
   ref,
   reactive,
+  onBeforeMount,
+  watch,
   onMounted,
   getCurrentInstance,
 } from '@vue/composition-api'
 import { useRouter } from 'vue2-helpers/vue-router'
 import { activityType } from '@/const/pageDict'
 import plugins from '@/kitLoader/loader/plugin'
-import baseData from '@d'
+// import baseData from '@d'
 
 const formLabelWidth = '80px'
 const router = useRouter()
-const { $confirm, $message } = getCurrentInstance().proxy
-const ActivityData = ref(baseData)
+const { $confirm, $message, $store } = getCurrentInstance().proxy
 const currentPage = ref(1)
 const projectFormVisible = ref(false)
 const pluginsData = ref(plugins())
@@ -131,6 +132,14 @@ const form = reactive({
   projectType: null,
   projectDesc: '',
   projectPlugins: [],
+  renderData: {
+    pages: [],
+    projectPlugins: [],
+  },
+})
+
+onMounted(() => {
+  $store.dispatch('getAllProjects')
 })
 
 function handleCurrentChange(e) {
@@ -151,26 +160,21 @@ function saveProject() {
   )
   const saveJsonData = {
     ...form,
-    projectPlugins,
-    createDate: `${new Date().getFullYear()}-${
-      new Date().getMonth() + 1
-    }-${new Date().getDate()}`,
-    pages: [],
+    renderData: {
+      pages: [],
+      projectPlugins,
+    },
   }
-  if (saveJsonData.id === null) {
-    const curMaxId = baseData[baseData.length - 1].id
-    saveJsonData.id = curMaxId + 1
-  }
-  console.log(JSON.stringify(saveJsonData))
-  ActivityData.value.push(saveJsonData)
-  projectFormVisible.value = false
+  $store.dispatch('createNewProject', saveJsonData).then(() => {
+    projectFormVisible.value = false
+  })
 }
 function handleRowModify(index, row) {
   form.id = row.id
   form.projectName = row.projectName
   form.projectType = row.projectType
   form.projectDesc = row.projectDesc
-  form.projectPlugins = row.projectPlugins.map((item) => item.name)
+  form.projectPlugins = row.renderData.projectPlugins.map((item) => item.name)
   projectFormVisible.value = true
 }
 function handleEdit(index, row) {
@@ -186,9 +190,11 @@ function handleDelete(index, row) {
     type: 'warning',
   })
     .then(() => {
-      $message({
-        type: 'success',
-        message: '删除成功!',
+      $store.dispatch('deleteProject', row.id).then(() => {
+        $message({
+          type: 'success',
+          message: '删除成功!',
+        })
       })
     })
     .catch(() => {

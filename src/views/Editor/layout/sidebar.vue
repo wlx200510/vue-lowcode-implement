@@ -1,6 +1,6 @@
 <template>
   <div class="app-sidebar">
-    <div class="sidebar-menu-group" v-for="(menu, index) in menuData">
+    <div class="sidebar-menu-group" v-for="menu in menuData">
       <div class="menu-group-title" @click="menu.collapse = !menu.collapse">
         {{ menu.title }}
         <i

@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-import pageData from '../../dataBase/0.json' // 实际用的时候这个数据是通过请求获取的
+import { apiGetProject } from '../services/lowcode'
 
 // 底部的rootStore可以封装打点函数和用户信息等基本数据
 
@@ -21,6 +21,8 @@ export default new Vuex.Store({
       userId: 0,
     },
     pageData: null,
+    hash: null,
+    query: {},
   },
   mutations: {
     setUserInfo(state, data) {
@@ -28,6 +30,12 @@ export default new Vuex.Store({
     },
     setPageData(state, data) {
       state.pageData = data
+    },
+    setQuery(state, query) {
+      state.query = query
+    },
+    setHash(state, hash) {
+      state.hash = hash
     },
   },
   actions: {
@@ -42,8 +50,10 @@ export default new Vuex.Store({
         commit('setUserInfo', data)
       })
     },
-    getPageData({ commit }) {
-      return Promise.resolve(pageData).then((data) => {
+    getPageData({ state, commit }) {
+      console.log(state.query)
+      const projectId = state.query.projectId || 1
+      return apiGetProject(projectId).then((data) => {
         commit('setPageData', data)
         return data
       })

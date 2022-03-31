@@ -129,9 +129,8 @@ import previewDialog from '@/components/preview.vue'
 import pageOption from '@/config/page.config.js'
 // 组件默认配置
 import { getAllClientSchema } from '@/kitLoader/client.js'
-import baseData from '@d' // 数据源
 
-const { $bus, $confirm, $message } = getCurrentInstance().proxy
+const { $bus, $confirm, $message, $store } = getCurrentInstance().proxy
 const clickShow = ref(false),
   previewShow = ref(false),
   compList = ref([]),
@@ -141,7 +140,8 @@ const clickShow = ref(false),
 const router = useRouter()
 const routeData = router.currentRoute
 let projectDataVal = null,
-  pageDataVal = null
+  pageDataVal = null,
+  pageDataIndex = 0
 
 let pageConfig = ref(util.copyObj(pageOption))
 let click = reactive({
@@ -340,19 +340,18 @@ function showPageSet() {
   currentConfig.value = null
 }
 function savePageSet() {
-  const pageIndex = projectDataVal.pages.findIndex(
-    (item) => item.pageId === pageDataVal.pageId
-  )
-  projectDataVal.pages[pageIndex] = {
-    ...projectDataVal.pages[pageIndex],
+  projectDataVal.renderData.pages[pageDataIndex] = {
+    ...projectDataVal.renderData.pages[pageDataIndex],
     config: compList.value,
     pageConfig: getPageOptionData(pageConfig.value),
   }
-  console.warn('save Info: ', JSON.stringify(projectDataVal))
-  $message({
-    message: '打开chomre devtool查看保存的信息！',
-    type: 'success',
+  $store.dispatch('updateOldProject', projectDataVal).then(() => {
+    $message({
+      message: '保存成功',
+      type: 'success',
+    })
   })
+  console.warn('save Info: ', JSON.stringify(projectDataVal))
 }
 function showPreview() {
   localStorage.setItem(
@@ -376,12 +375,14 @@ function resetCompUnchecked() {
 }
 function setLocalPageData() {
   // routeData.params.id routeData.params.pageId
-  projectDataVal = baseData.find(
+  projectDataVal = $store.state.projects.find(
     (item) => item.id === Number(routeData.params.id)
   )
-  pageDataVal = projectDataVal.pages.find(
+  pageDataIndex = projectDataVal.renderData.pages.findIndex(
     (item) => item.pageId === Number(routeData.params.pageId)
   )
+
+  pageDataVal = projectDataVal.renderData.pages[pageDataIndex]
   if (pageDataVal?.config) {
     compList.value = pageDataVal.config
   }
