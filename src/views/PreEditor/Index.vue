@@ -2,8 +2,8 @@
   <div class="app-body">
     <div class="app-main">
       <appTopbar
-        v-on:savePageSet="savePageSet"
-        v-on:syncPreview="syncPreview"
+        @savePageSet="savePageSet"
+        @syncPreview="syncPreview"
       ></appTopbar>
       <div class="iframe-con" id="preIframe"></div>
     </div>
@@ -15,6 +15,7 @@
 import {
   ref,
   reactive,
+  watch,
   getCurrentInstance,
   onMounted,
 } from '@vue/composition-api'
@@ -67,7 +68,7 @@ function setPrePageOption(config, formData) {
 }
 
 function savePageSet() {
-  pageDataIndex = projectDataVal.renderData.pages.findIndex(
+  const pageDataIndex = projectDataVal.renderData.pages.findIndex(
     (item) => item.pageId === Number(routeData.params.pageId)
   )
   projectDataVal.renderData.pages[pageDataIndex] = {
@@ -80,6 +81,7 @@ function savePageSet() {
       message: '保存成功',
       type: 'success',
     })
+    router.back()
   })
 }
 function getSettingData() {
@@ -100,6 +102,16 @@ function syncPreview() {
     )
   })
 }
+watch(
+  () => pageConfig.value,
+  () => syncPreview(),
+  { deep: true }
+)
+watch(
+  () => settings.value,
+  () => syncPreview(),
+  { deep: true }
+)
 onMounted(() => {
   setLocalPageData()
 })

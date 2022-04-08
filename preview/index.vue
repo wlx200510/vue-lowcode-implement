@@ -1,5 +1,5 @@
 <template>
-  <router-view :pageData="data"></router-view>
+  <router-view :pageData="renderData"></router-view>
 </template>
 
 <script lang="js">
@@ -8,19 +8,19 @@ export default {
   name: 'Child',
   data(){
     return {
-      data: null,
+      renderData: null,
       handShake: null
     }
   },
   created() {
     this.handShake = new Postmate.Model({
       getData: (data) => {
-        this.data = JSON.parse(data)
+        this.renderData = JSON.parse(data)
       }
     })
   },
   watch: {
-    'data': function(newVal) {
+    renderData: function(newVal) {
       const { pageConfig, config } = newVal
       const { base } = pageConfig
       if (config) {

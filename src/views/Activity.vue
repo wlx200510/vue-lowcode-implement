@@ -50,10 +50,12 @@
     </el-dialog>
     <el-button type="primary" @click="onButtonClick">创建项目</el-button>
     <el-table :data="$store.state.projects" style="width: 100%">
-      <el-table-column label="日期" width="180">
+      <el-table-column label="更新日期" width="180">
         <template slot-scope="scope">
           <i class="el-icon-time"></i>
-          <span style="margin-left: 10px">{{ scope.row.createDate }}</span>
+          <span style="margin-left: 10px">
+            {{ handleDateFormat(scope.row.updateTime) }}</span
+          >
         </template>
       </el-table-column>
       <el-table-column
@@ -141,6 +143,10 @@ const form = reactive({
 onMounted(() => {
   $store.dispatch('getAllProjects')
 })
+
+function handleDateFormat(timeStr) {
+  return new Date(timeStr).toLocaleDateString()
+}
 
 function handleCurrentChange(e) {
   console.log(e)

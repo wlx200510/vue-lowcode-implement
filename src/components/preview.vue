@@ -17,8 +17,11 @@
 
         <div class="pre-desc">
           <h3 style="color: red">预览说明：</h3>
-          <p>预览仅供参考，不代表真机效果；</p>
-          <p>部分用户相关的内容，需要对应的用户登录态进行预览</p>
+          <ul>
+            <li>预览仅供参考，不代表真机效果；</li>
+            <li>部分用户相关的内容，需要对应的用户登录态进行预览；</li>
+            <li>由于交互需要运行时数据，点击事件在本界面被禁止；</li>
+          </ul>
         </div>
       </el-col>
     </el-row>
@@ -74,15 +77,21 @@ onMounted(() => {
       position: absolute;
       left: 110%;
       top: 20%;
-      width: 180px;
+      width: 220px;
       height: 250px;
       padding: 10px;
       background-color: #fff;
+      text-align: left;
 
-      > p {
+      > ul {
         margin: 0;
         text-align: left;
         line-height: 1.5;
+        li {
+          text-align: left;
+          list-style: none;
+          padding-bottom: 10px;
+        }
       }
     }
 

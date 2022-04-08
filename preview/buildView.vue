@@ -43,5 +43,6 @@ export default {
 .comp-blocks {
   width: 100%;
   min-height: 100vh;
+  pointer-events: none;
 }
 </style>

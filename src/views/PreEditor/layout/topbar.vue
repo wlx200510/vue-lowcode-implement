@@ -10,10 +10,6 @@
         <i class="el-icon-edit"></i>
         <span>保存</span>
       </div>
-      <div class="bar-btn" @click="syncPreview()">
-        <i class="el-icon-view"></i>
-        <span>同步</span>
-      </div>
     </el-col>
   </el-row>
 </template>

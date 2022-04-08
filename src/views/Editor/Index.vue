@@ -350,8 +350,8 @@ function savePageSet() {
       message: '保存成功',
       type: 'success',
     })
+    router.back()
   })
-  console.warn('save Info: ', JSON.stringify(projectDataVal))
 }
 function showPreview() {
   localStorage.setItem(
